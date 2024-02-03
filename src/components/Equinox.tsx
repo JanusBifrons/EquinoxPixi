@@ -1,3 +1,6 @@
+'use client'
+
+import { hasValue } from "@/app/util";
 import { Game } from "@/game/Game";
 import React, { ReactNode, RefObject } from "react";
 
@@ -13,7 +16,9 @@ export class Equinox extends React.Component {
     }
 
     public componentDidMount(): void {
-        this._game = new Game(this._canvas.current);
+        if (!hasValue(this._game)) {
+            this._game = new Game(this._canvas.current);
+        }
     }
 
     public render(): ReactNode {

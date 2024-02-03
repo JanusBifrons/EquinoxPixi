@@ -1,8 +1,11 @@
+'use client'
+
 import { Vector } from "matter-js";
 import { Player } from "./Player";
 import { Matter } from "./matter/Matter";
 import { GameObject } from "./objects/GameObject";
 import { Havoc } from "./objects/ships/fighters/Havoc";
+import { Pixi } from "./pixi/Pixi";
 import { Input } from "@/components/Input";
 
 export class Game {
@@ -11,11 +14,13 @@ export class Game {
     /// PRIVATE
     ///
     private _matter: Matter;
+    private _pixi: Pixi;
     private _gameObjects: GameObject[] = [];
     private _player: Player;
 
     constructor(canvas: HTMLCanvasElement) {
         this._matter = new Matter();
+        this._pixi = new Pixi();
 
         // Attach events
         this._matter.beforeUpdate.addHandler(this.update.bind(this));
@@ -23,8 +28,11 @@ export class Game {
         // Start the engine
         this._matter.startEngine();
 
+        // Start the pixi renderer
+        this._pixi.start(canvas);
+
         // Start the renderer
-        this._matter.startRenderer(canvas);
+        //this._matter.startRenderer(canvas);
 
         // Create the player
         this.createPlayer();
@@ -62,5 +70,7 @@ export class Game {
         Input.Update();
 
         this._player.update();
+        this._pixi.update(this._gameObjects, this._player.ship.position);
+
     }
 }
