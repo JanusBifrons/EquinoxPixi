@@ -48,7 +48,7 @@ export class Ship extends GameObject {
     ///
 
     public update(): void {
-
+        super.update();
     }
 
     public destroy(): void {

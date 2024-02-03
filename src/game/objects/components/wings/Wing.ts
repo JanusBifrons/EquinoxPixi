@@ -15,10 +15,10 @@ export class Wing extends Component {
         verts.push(Vector.create(0, 0));
 
         if (!mirror) {
-            this.setBody(Bodies.fromVertices(position.x, position.y, [verts]));
+            this.setParts([Bodies.fromVertices(position.x, position.y, [verts])]);
         }
         else {
-            this.setBody(Bodies.fromVertices(position.x, position.y, [verts.map((v => Vector.create(v.x, -v.y)))]));
+            this.setParts([Bodies.fromVertices(position.x, position.y, [verts.map((v => Vector.create(v.x, -v.y)))])]);
         }
     }
 }

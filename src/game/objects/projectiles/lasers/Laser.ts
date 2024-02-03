@@ -11,7 +11,7 @@ export class Laser extends Projectile {
         Body.setAngle(body, angle);
         body.isSensor = true;
 
-        this.setBody(body);
+        this.setParts([body]);
 
         let x: number = Math.cos(angle) * (50 + speed);
         let y: number = Math.sin(angle) * (50 + speed);

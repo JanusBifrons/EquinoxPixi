@@ -25,8 +25,8 @@ export class Asteroid extends GameObject {
             verts.push(Vector.create(_x, _y));
         }
 
-        this.setBody(Bodies.fromVertices(0, 0, [verts], {
-        }));
+        this.setParts([Bodies.fromVertices(0, 0, [verts], {
+        })]);
 
         //Body.setDensity(this.body, 1);
 

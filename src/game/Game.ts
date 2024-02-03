@@ -57,10 +57,13 @@ export class Game {
         // Extract all of the bodies so we can add them at once
         const bodys = gameObjects.map(go => go.body);
 
+        // Extract all of the containers 
+        const containers = gameObjects.map(go => go.container);
+
         // Add the bodies as one group for efficiency 
         this._matter.addBodys(bodys);
+        this._pixi.addContainers(containers);
     }
-
 
     ///
     /// PUBLIC
@@ -69,8 +72,11 @@ export class Game {
     public update(): void {
         Input.Update();
 
-        this._player.update();
-        this._pixi.update(this._gameObjects, this._player.ship.position);
+        for (const gameObject of this._gameObjects) {
+            gameObject.update();
+        }
 
+        this._player.update();
+        this._pixi.update(this._player.ship.position);
     }
 }

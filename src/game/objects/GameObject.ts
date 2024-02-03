@@ -1,5 +1,6 @@
-import Matter, { Bodies, Body, Collision, Composite, ICollisionCallback, ICollisionFilter, Vector } from "matter-js";
+import Matter, { Body, Vector } from "matter-js";
 import { EGameObjectType } from "./GameObjectTypes";
+import { Container, Graphics } from "pixi.js";
 
 export class GameObject {
     ///
@@ -8,14 +9,7 @@ export class GameObject {
     private _body: Matter.Body;
     private _type: EGameObjectType;
     private _position: Vector;
-
-    ///
-    /// PROTECTED
-    ///
-    protected _strokeStyle: string;
-    protected _fillStyle: string;
-    protected _lineWidth: number = 10;
-
+    private _container: Container;
 
     constructor(position: Vector, type: EGameObjectType) {
         this._position = position;
@@ -23,12 +17,9 @@ export class GameObject {
 
         this._body = Body.create({
             frictionAir: 0,
-            render: {
-                lineWidth: this._lineWidth,
-                strokeStyle: this._strokeStyle,
-                fillStyle: this._fillStyle,
-            },
         });
+
+        this._container = new Container();
     }
 
     ///
@@ -36,24 +27,11 @@ export class GameObject {
     ///
 
     public update(): void {
+        console.log("hello world");
 
+        this._container.position = this._body.position;
+        this._container.rotation = this._body.angle;
     }
-
-    ///
-    /// PRIVATE
-    ///
-
-    // private getCollisionFilter(): ICollisionFilter {
-    //     switch (this._type) {
-
-    //     }
-
-
-
-    //     return {
-    //         category: this._type
-    //     };
-    // }
 
     ///
     /// PUBLIC
@@ -63,14 +41,26 @@ export class GameObject {
         Body.setParts(this._body, parts);
 
         Body.setPosition(this.body, this._position);
-    }
 
-    public setBody(body: Body): void {
-        Body.setParts(this._body, [
-            body
-        ]);
+        for (const part of parts) {
+            const graphics = new Graphics();
+            graphics.beginFill('red');
 
-        Body.setPosition(this.body, this._position);
+            for (let i = 0; i < part.vertices.length; i++) {
+                const vert = part.vertices[i];
+
+                if (i == 0) {
+                    graphics.moveTo(vert.x, vert.y);
+                }
+                else {
+                    graphics.lineTo(vert.x, vert.y);
+                }
+            }
+
+            graphics.endFill();
+
+            this._container.addChild(graphics);
+        }
     }
 
     ///
@@ -107,5 +97,9 @@ export class GameObject {
 
     public get y(): number {
         return this._body.position.y;
+    }
+
+    public get container(): Container {
+        return this._container;
     }
 }

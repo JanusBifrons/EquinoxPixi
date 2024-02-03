@@ -8,6 +8,6 @@ export class Projectile extends GameObject {
     }
 
     public update(): void {
-
+        super.update();
     }
 }
