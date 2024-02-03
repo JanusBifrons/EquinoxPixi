@@ -89,7 +89,7 @@ export class Matter {
     public onBeforeUpdate(): void {
         this.beforeUpdate.raise(this);
 
-        if (hasValue(this._lookAt)) {
+        if (hasValue(this._render) && hasValue(this._lookAt)) {
             //Render.lookAt(this._render, this._player.ship, Vector.create(500, 500), true);
             Render.lookAt(this._render, this._lookAt, Vector.create(2500, 2500), true);
         }
