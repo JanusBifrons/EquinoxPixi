@@ -73,8 +73,6 @@ export class Game {
         ship.destroyed.addHandler(() => {
             const childComponents: Body[] = ship.body.parts.slice(1);
 
-            this.removeGameObjects(ship);
-
             this.addGameObjects(...childComponents.map(cp => new Scrap(cp)));
         });
     }
@@ -153,14 +151,10 @@ export class Game {
                             const ship = gameObjectA as Ship;
                             ship.destroy();
 
-                            this.removeGameObjects(gameObjectB);
+                            this.removeGameObjects(gameObjectA, gameObjectB);
+                            return;
                         }
                     }
-
-                    break;
-
-                case EGameObjectType.Projectile:
-                    this.removeGameObjects(gameObjectA);
                     break;
             }
         }
@@ -173,13 +167,10 @@ export class Game {
                             const ship = gameObjectB as Ship;
                             ship.destroy();
 
-                            this.removeGameObjects(gameObjectA);
+                            this.removeGameObjects(gameObjectA, gameObjectB);
+                            return;
                         }
                     }
-                    break;
-
-                case EGameObjectType.Projectile:
-                    this.removeGameObjects(gameObjectB);
                     break;
             }
         }
