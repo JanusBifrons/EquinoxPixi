@@ -45,11 +45,10 @@ export class GameObject {
 
             graphics.position = Vector.neg(this._position);
             graphics.beginFill('red');
+            graphics.lineStyle(10, 'white');
 
             for (let i = 0; i < part.vertices.length; i++) {
                 const vert = part.vertices[i];
-
-                console.log(vert);
 
                 if (i == 0) {
                     graphics.moveTo(vert.x, vert.y);
@@ -58,6 +57,8 @@ export class GameObject {
                     graphics.lineTo(vert.x, vert.y);
                 }
             }
+
+            graphics.closePath();
 
             graphics.endFill();
 

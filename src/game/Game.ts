@@ -1,12 +1,18 @@
 'use client'
 
-import { Vector } from "matter-js";
+import { Body, Engine, IEventCollision, Vector } from "matter-js";
 import { Player } from "./Player";
 import { Matter } from "./matter/Matter";
 import { GameObject } from "./objects/GameObject";
 import { Havoc } from "./objects/ships/fighters/Havoc";
 import { Pixi } from "./pixi/Pixi";
 import { Input } from "@/components/Input";
+import { Debug } from "./objects/ships/Debug";
+import { hasValue } from "@/app/util";
+import { EGameObjectType } from "./objects/GameObjectTypes";
+import { Ship } from "./objects/ships/Ship";
+import { IFiredEventArgs } from "./Args";
+import { Scrap } from "./objects/Scrap";
 
 export class Game {
 
@@ -24,6 +30,7 @@ export class Game {
 
         // Attach events
         this._matter.beforeUpdate.addHandler(this.update.bind(this));
+        this._matter.collisionStart.addHandler(this.onCollision.bind(this));
 
         // Start the engine
         this._matter.startEngine();
@@ -36,23 +43,52 @@ export class Game {
 
         // Create the player
         this.createPlayer();
+
+        //this.addGameObjects(new Havoc(Vector.create(0, 0)));
+
+        // Create debug ships
+        for (let i = 0; i < 100; i++) {
+            this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
+        }
     }
 
     ///
-    /// PRIVATE
+    /// PUBLIC
     ///
 
     public createPlayer(): void {
-        this._player = new Player(new Havoc(Vector.create(-200, 0)));
+        //this._player = new Player(new Debug(Vector.create(0, 0)));
+        this._player = new Player(new Havoc(Vector.create(500, 0)));
 
         this.addGameObjects(this._player.ship);
 
         this._matter.lookAt = this._player.ship;
     }
 
+    public addShipEvents(ship: Ship): void {
+        ship.fired.addHandler((sender: Ship, args: IFiredEventArgs) => {
+            this.addGameObjects(...args.projectiles);
+        });
+
+        ship.destroyed.addHandler(() => {
+            const childComponents: Body[] = ship.body.parts.slice(1);
+
+            this.removeGameObjects(ship);
+
+            this.addGameObjects(...childComponents.map(cp => new Scrap(cp)));
+        });
+    }
+
     public addGameObjects(...gameObjects: GameObject[]): void {
         // Add the objects to the array for tracking/updating
         this._gameObjects.push(...gameObjects);
+
+        // Check if they're ships and attach the events if they are
+        gameObjects.forEach((go) => {
+            if (go.type == EGameObjectType.Ship) {
+                this.addShipEvents(go as Ship)
+            }
+        });
 
         // Extract all of the bodies so we can add them at once
         const bodys = gameObjects.map(go => go.body);
@@ -65,9 +101,20 @@ export class Game {
         this._pixi.addContainers(containers);
     }
 
-    ///
-    /// PUBLIC
-    ///
+    public removeGameObjects(...gameObjects: GameObject[]) {
+        // Remove the objects from the array
+        gameObjects.forEach(go => this._gameObjects.splice(this._gameObjects.indexOf(go), 1));
+
+        // Extract all of the bodies so we can remove them at once
+        const bodys = gameObjects.map(go => go.body);
+
+        // Extract all of the containers 
+        const containers = gameObjects.map(go => go.container);
+
+        // Add the bodies as one group for efficiency 
+        this._matter.removeBodys(bodys);
+        this._pixi.removeContainers(containers);
+    }
 
     public update(): void {
         Input.Update();
@@ -78,5 +125,63 @@ export class Game {
 
         this._player.update();
         this._pixi.update(this._player.ship.position);
+    }
+
+
+    ///
+    /// EVENT HANDLERS
+    ///
+
+    public onCollision(sender: Matter, e: IEventCollision<Engine>): void {
+        for (const collision of e.pairs) {
+            const bodyA: Body = collision.collision.parentA ? collision.collision.parentA : collision.bodyA;
+            const bodyB: Body = collision.collision.parentB ? collision.collision.parentB : collision.bodyB;
+
+            const gameObjectA = this._gameObjects.find(obj => obj.id == bodyA.id);
+            const gameObjectB = this._gameObjects.find(obj => obj.id == bodyB.id);
+
+            this.onHandleCollision(gameObjectA, gameObjectB);
+        }
+    }
+
+    public onHandleCollision(gameObjectA: GameObject, gameObjectB: GameObject): void {
+        if (hasValue(gameObjectA)) {
+            switch (gameObjectA.type) {
+                case EGameObjectType.Ship:
+                    if (hasValue(gameObjectB)) {
+                        if (gameObjectB.type == EGameObjectType.Projectile) {
+                            const ship = gameObjectA as Ship;
+                            ship.destroy();
+
+                            this.removeGameObjects(gameObjectB);
+                        }
+                    }
+
+                    break;
+
+                case EGameObjectType.Projectile:
+                    this.removeGameObjects(gameObjectA);
+                    break;
+            }
+        }
+
+        if (hasValue(gameObjectB)) {
+            switch (gameObjectB.type) {
+                case EGameObjectType.Ship:
+                    if (hasValue(gameObjectA)) {
+                        if (gameObjectA.type == EGameObjectType.Projectile) {
+                            const ship = gameObjectB as Ship;
+                            ship.destroy();
+
+                            this.removeGameObjects(gameObjectA);
+                        }
+                    }
+                    break;
+
+                case EGameObjectType.Projectile:
+                    this.removeGameObjects(gameObjectB);
+                    break;
+            }
+        }
     }
 }

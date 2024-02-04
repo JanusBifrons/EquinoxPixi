@@ -32,8 +32,8 @@ export class Havoc extends Ship {
 
         this.setParts([
             new Cockpit(Vector.create(100, 0)).body,
-            new Wing(Vector.create(-100, 118), true).body,
-            new Wing(Vector.create(-100, -118)).body,
+            new Wing(Vector.create(-100, 115), true).body,
+            new Wing(Vector.create(-100, -115)).body,
             launcherOne.body,
             //launcherTwo.body,
             //laserOne.body,

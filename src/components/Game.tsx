@@ -236,7 +236,6 @@ export class Game extends React.Component {
                     break;
             }
         }
-
     }
 
     public onCollisionStart(e: IEventCollision<Engine>): void {

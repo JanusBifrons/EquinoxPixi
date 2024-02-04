@@ -24,9 +24,6 @@ export class Missile extends Projectile {
         let x: number = Math.cos(angle) * (50 + speed);
         let y: number = Math.sin(angle) * (50 + speed);
 
-        // let x: number = Math.cos(angle);
-        // let y: number = Math.sin(angle);
-
         Body.setVelocity(this.body, Vector.create(x, y));
     }
 
@@ -35,8 +32,6 @@ export class Missile extends Projectile {
 
         const x = this._target.position.x - this.body.position.x;
         const y = this._target.position.y - this.body.position.y;
-
-        const distance = Vector.magnitude(Vector.create(x, y));
 
         const desiredAngle = Math.atan2(y, x);
 

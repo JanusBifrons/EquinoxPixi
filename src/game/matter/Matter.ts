@@ -1,6 +1,6 @@
 import { hasValue } from "@/app/util";
 import { Event } from "@/components/Event";
-import { Body, Composite, Engine, Events, IRunnerOptions, Render, Runner, Vector, World } from "matter-js";
+import { Body, Composite, Engine, Events, IEventCollision, IRunnerOptions, Render, Runner, Vector, World } from "matter-js";
 import { Ship } from "../objects/ships/Ship";
 
 export class Matter {
@@ -17,6 +17,7 @@ export class Matter {
     /// EVENTS
     ///
     public beforeUpdate: Event = new Event();
+    public collisionStart: Event = new Event();
 
     constructor() {
     }
@@ -27,6 +28,10 @@ export class Matter {
 
     public addBodys(bodys: Body[]): void {
         Composite.add(this._world, bodys);
+    }
+
+    public removeBodys(bodys: Body[]): void {
+        Composite.remove(this._world, bodys);
     }
 
     public startEngine(): void {
@@ -47,6 +52,7 @@ export class Matter {
         Runner.run(this._runner, this._engine);
 
         Events.on(this._runner, 'beforeUpdate', this.onBeforeUpdate.bind(this));
+        Events.on(this._engine, 'collisionStart', this.onCollisionStart.bind(this));
     }
 
     public startRenderer(canvas: HTMLCanvasElement, options?: Matter.IRendererOptions): void {
@@ -93,6 +99,10 @@ export class Matter {
             //Render.lookAt(this._render, this._player.ship, Vector.create(500, 500), true);
             Render.lookAt(this._render, this._lookAt, Vector.create(2500, 2500), true);
         }
+    }
+
+    public onCollisionStart(e: IEventCollision<Engine>): void {
+        this.collisionStart.raise(this, e);
     }
 
     ///
