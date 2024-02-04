@@ -27,8 +27,6 @@ export class GameObject {
     ///
 
     public update(): void {
-        console.log("hello world");
-
         this._container.position = this._body.position;
         this._container.rotation = this._body.angle;
     }
@@ -44,10 +42,14 @@ export class GameObject {
 
         for (const part of parts) {
             const graphics = new Graphics();
+
+            graphics.position = Vector.neg(this._position);
             graphics.beginFill('red');
 
             for (let i = 0; i < part.vertices.length; i++) {
                 const vert = part.vertices[i];
+
+                console.log(vert);
 
                 if (i == 0) {
                     graphics.moveTo(vert.x, vert.y);
