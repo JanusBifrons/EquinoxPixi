@@ -13,6 +13,7 @@ import { EGameObjectType } from "./objects/GameObjectTypes";
 import { Ship } from "./objects/ships/Ship";
 import { IFiredEventArgs } from "./Args";
 import { Scrap } from "./objects/Scrap";
+import { Indicators } from "./ui/Indicators";
 
 export class Game {
 
@@ -23,6 +24,7 @@ export class Game {
     private _pixi: Pixi;
     private _gameObjects: GameObject[] = [];
     private _player: Player;
+    private _indicators: Indicators;
 
     constructor(canvas: HTMLCanvasElement) {
         this._matter = new Matter();
@@ -44,10 +46,13 @@ export class Game {
         // Create the player
         this.createPlayer();
 
+        // Create the UI
+        this.createUI();
+
         //this.addGameObjects(new Havoc(Vector.create(0, 0)));
 
         // Create debug ships
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 10; i++) {
             this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
         }
     }
@@ -55,6 +60,12 @@ export class Game {
     ///
     /// PUBLIC
     ///
+
+    public createUI(): void {
+        this._indicators = new Indicators(this._player);
+
+        this._pixi.addContainers([this._indicators.container]);
+    }
 
     public createPlayer(): void {
         //this._player = new Player(new Debug(Vector.create(0, 0)));
@@ -120,6 +131,8 @@ export class Game {
         for (const gameObject of this._gameObjects) {
             gameObject.update();
         }
+
+        this._indicators.update(this._gameObjects);
 
         this._player.update();
         this._pixi.update(this._player.ship.position);

@@ -39,6 +39,6 @@ export class Colour {
     ///
 
     public toString(): string {
-        return "rgba(" + this.r.toString() + "," + this.g.toString() + "," + this.b.toString() + "," + this.a.toString();
+        return "rgba(" + this.r.toString() + "," + this.g.toString() + "," + this.b.toString() + "," + this.a.toString() + ")";
     }
 }

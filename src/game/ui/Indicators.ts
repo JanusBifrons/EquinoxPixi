@@ -3,6 +3,13 @@ import { Player } from "../Player";
 import { GameObject } from "../objects/GameObject";
 import { EGameObjectType } from "../objects/GameObjectTypes";
 import { Colour } from "@/components/Colour";
+import { Container, Graphics, Transform } from "pixi.js";
+import { hasValue } from "@/app/util";
+
+interface IndicatorItem {
+    id: number;
+    indicator: Graphics;
+}
 
 export class Indicators {
 
@@ -11,83 +18,80 @@ export class Indicators {
     ///
     private _player: Player;
     private _gameObjects: GameObject[] = [];
+    private _indicatorItems: IndicatorItem[] = [];
+    private _container: Container;
 
     constructor(player: Player) {
         this._player = player;
+
+        this._container = new Container();
     }
 
     public update(gameObjects: GameObject[]): void {
         this._gameObjects = gameObjects.filter(go => go.id != this._player.ship.id);
+
+        // Keep this container in screen space
+        this._container.position = Vector.sub(this._player.ship.position, Vector.create(window.innerWidth * 2, window.innerHeight * 2));
+
+        this._gameObjects.forEach((go) => {
+            const indicatorItem: IndicatorItem = this._indicatorItems.find(i => i.id == go.id);
+
+            if (hasValue(indicatorItem)) {
+                this.updateIndicator(indicatorItem, go);
+            }
+            else {
+                this.createNewIndciator(go);
+            }
+        });
     }
 
-    public draw(context: CanvasRenderingContext2D): void {
+    public createNewIndciator(gameObject: GameObject): void {
+        let colour: Colour;
 
+        switch (gameObject.type) {
+            case EGameObjectType.Projectile:
+                colour = Colour.Red;
+                break;
 
-        for (const gameObject of this._gameObjects) {
-            // console.log(gameObject);
+            default:
+            case EGameObjectType.Ship:
+                colour = Colour.Blue;
+                break;
 
-            const difference = Vector.create(gameObject.x - this._player.ship.x, gameObject.y - this._player.ship.y);
-            const angle = Math.atan2(difference.y, difference.x);
-            const distance = Vector.magnitude(difference);
-
-            if (distance < 1250) {
-                continue;
-            }
-
-            let colour: Colour = Colour.White;
-
-            switch (gameObject.type) {
-                case EGameObjectType.Projectile:
-                    colour = Colour.Red;
-                    break;
-
-                case EGameObjectType.Component:
-                    continue;
-
-                case EGameObjectType.Ship:
-                    colour = Colour.Blue;
-                    break;
-
-                case EGameObjectType.World:
-                    colour = Colour.Grey;
-                    break;
-            }
-
-            const x: number = Math.cos(angle) * 250;
-            const y: number = Math.sin(angle) * 250;
-
-            context.save();
-            context.translate(window.innerWidth / 2, window.innerHeight / 2);
-
-            context.save();
-            context.translate(x, y);
-            context.rotate(angle);
-            context.scale(0.25, 0.25);
-
-            context.beginPath();
-            context.strokeStyle = colour.toString();
-            context.fillStyle = colour.toString();
-
-            context.moveTo(-1, 1);
-            context.lineTo(-1, -1);
-            context.lineTo(1, 0);
-            context.closePath();
-            context.stroke();
-
-            context.restore();
-
-
-
-
-
-
-            //context.arc(x, y, 10, 0, Math.PI * 2);
-
-
-
-            context.restore();
+            case EGameObjectType.World:
+                colour = Colour.Grey;
+                break;
         }
 
+        const graphics = new Graphics();
+        graphics.beginFill(colour.toString());
+        graphics.moveTo(-25, 25);
+        graphics.lineTo(-25, -25);
+        graphics.lineTo(25, 0);
+        graphics.closePath();
+        graphics.endFill();
 
+        const newItem = {
+            id: gameObject.id,
+            indicator: graphics
+        } as IndicatorItem;
+
+        this._indicatorItems.push(newItem);
+
+        this._container.addChild(newItem.indicator);
+    }
+
+    public updateIndicator(indicator: IndicatorItem, gameObject: GameObject): void {
+        const difference = Vector.create(gameObject.x - this._player.ship.x, gameObject.y - this._player.ship.y);
+        const angle = Math.atan2(difference.y, difference.x);
+        const x: number = Math.cos(angle) * 750;
+        const y: number = Math.sin(angle) * 750;
+
+        indicator.indicator.position = Vector.create(window.innerWidth * 2 + x, window.innerHeight * 2 + y);
+        indicator.indicator.rotation = angle;
+    }
+
+    public get container(): Container {
+        return this._container;
     }
 }

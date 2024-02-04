@@ -32,6 +32,8 @@ export class Pixi {
     }
 
     public addContainers(containers: Container[]): void {
+        console.log(this._stage);
+
         this._stage.addChild(...containers);
     }
 

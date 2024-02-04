@@ -15,29 +15,29 @@ export class Havoc extends Ship {
     constructor(position: Vector) {
         super(position, Havoc.Stats());
 
-        // const laserOne = new LightLaser(Vector.create(-50, -200));
-        // const laserTwo = new LightLaser(Vector.create(-50, 200));
+        const laserOne = new LightLaser(Vector.create(-50, -200));
+        const laserTwo = new LightLaser(Vector.create(-50, 200));
 
-        // this.addWeapon(laserOne);
-        // this.addWeapon(laserTwo);
+        this.addWeapon(laserOne);
+        this.addWeapon(laserTwo);
 
-        const launcherOne = new MissileLauncher(Vector.create(-50, 200));
-        const launcherTwo = new MissileLauncher(Vector.create(-50, -200));
+        //const launcherOne = new MissileLauncher(Vector.create(-50, 200));
+        //const launcherTwo = new MissileLauncher(Vector.create(-50, -200));
 
-        launcherOne.setTarget(this.body);
+        //launcherOne.setTarget(this.body);
         //launcherTwo.setTarget(this.body);
 
-        this.addWeapon(launcherOne);
+        //this.addWeapon(launcherOne);
         //this.addWeapon(launcherTwo);
 
         this.setParts([
             new Cockpit(Vector.create(100, 0)).body,
             new Wing(Vector.create(-100, 115), true).body,
             new Wing(Vector.create(-100, -115)).body,
-            launcherOne.body,
+            //launcherOne.body,
             //launcherTwo.body,
-            //laserOne.body,
-            //laserTwo.body
+            laserOne.body,
+            laserTwo.body
         ]);
     }
 

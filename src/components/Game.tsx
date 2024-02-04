@@ -27,7 +27,7 @@ export class Game extends React.Component {
     private _gameObjects: GameObject[] = [];
     private _debugShip: Ship;
     private _UI: UI;
-    private _indicators: Indicators;
+    //private _indicators: Indicators;
 
     ///
     /// MATTER 
@@ -67,7 +67,7 @@ export class Game extends React.Component {
 
     public createUI(): void {
         this._UI = new UI(this._render.context);
-        this._indicators = new Indicators(this._player);
+        //this._indicators = new Indicators(this._player);
     }
 
     public addShip(ship: Ship): void {
@@ -261,7 +261,7 @@ export class Game extends React.Component {
 
     public onAfterRender(): void {
         this._UI.render();
-        this._indicators.draw(this._render.context);
+        //this._indicators.draw(this._render.context);
     }
 
     public onBeforeUpdate(): void {
@@ -273,7 +273,7 @@ export class Game extends React.Component {
             gameObject.update();
         }
 
-        this._indicators.update(this._gameObjects);
+        //this._indicators.update(this._gameObjects);
     }
 
     ///
