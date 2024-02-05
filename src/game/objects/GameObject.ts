@@ -1,6 +1,8 @@
 import Matter, { Body, Vector } from "matter-js";
 import { EGameObjectType } from "./GameObjectTypes";
 import { Container, Graphics } from "pixi.js";
+import { hasValue } from "@/app/util";
+import { Component } from "./components/Component";
 
 export class GameObject {
     ///
@@ -23,24 +25,11 @@ export class GameObject {
     }
 
     ///
-    /// PUBLIC
+    /// PRIVATE
     ///
 
-    public update(): void {
-        this._container.position = this._body.position;
-        this._container.rotation = this._body.angle;
-    }
-
-    ///
-    /// PUBLIC
-    ///
-
-    public setParts(parts: Body[]): void {
-        Body.setParts(this._body, parts);
-
-        Body.setPosition(this.body, this._position);
-
-        for (const part of parts) {
+    private populateContainer(): void {
+        for (const part of this._body.parts.slice(1)) { // Ignore the first part as it's the main body
             const graphics = new Graphics();
 
             graphics.position = Vector.neg(this._position);
@@ -59,11 +48,45 @@ export class GameObject {
             }
 
             graphics.closePath();
-
             graphics.endFill();
 
             this._container.addChild(graphics);
         }
+    }
+
+    ///
+    /// PUBLIC
+    ///
+
+    public update(): void {
+        this._container.position = this._body.position;
+        this._container.rotation = this._body.angle;
+    }
+
+    ///
+    /// PUBLIC
+    ///
+
+    public setComponents(...components: Component[]): void {
+        const bodys = components.map(c => c.body);
+        this.setParts(bodys, true);
+
+        const containers = components.map((c) => { return c.container; });
+
+        this._container.addChild(...containers);
+    }
+
+    public setParts(parts: Body[], draw: boolean): void {
+        Body.setParts(this._body, parts);
+        Body.setPosition(this.body, this._position);
+
+        if (draw) {
+            this.populateContainer();
+        }
+    }
+
+    public addGraphics(graphics: Graphics): void {
+        this._container.addChild(graphics);
     }
 
     ///

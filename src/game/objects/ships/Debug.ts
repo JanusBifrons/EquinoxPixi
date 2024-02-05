@@ -8,10 +8,10 @@ export class Debug extends Ship {
     constructor(position: Vector) {
         super(position, Debug.Stats());
 
-        this.setParts([
-            new Wing(Vector.create(-100, 120), true).body,
-            new Wing(Vector.create(-100, -120)).body,
-        ]);
+        // this.setParts([
+        //     new Wing(Vector.create(-100, 120), true).body,
+        //     new Wing(Vector.create(-100, -120)).body,
+        // ]);
     }
 
     public static Stats(): ShipStats {

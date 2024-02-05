@@ -1,5 +1,6 @@
 import { Bodies, Vector } from "matter-js";
 import { Component } from "../Component";
+import { Graphics } from "pixi.js";
 
 export class Wing extends Component {
     constructor(position: Vector, mirror: boolean = false) {
@@ -15,10 +16,10 @@ export class Wing extends Component {
         verts.push(Vector.create(0, 0));
 
         if (!mirror) {
-            this.setParts([Bodies.fromVertices(position.x, position.y, [verts])]);
+            this.setParts([Bodies.fromVertices(position.x, position.y, [verts])], false);
         }
         else {
-            this.setParts([Bodies.fromVertices(position.x, position.y, [verts.map((v => Vector.create(v.x, -v.y)))])]);
+            this.setParts([Bodies.fromVertices(position.x, position.y, [verts.map((v => Vector.create(v.x, -v.y)))])], false);
         }
     }
 }
