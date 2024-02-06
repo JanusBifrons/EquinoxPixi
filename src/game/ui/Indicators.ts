@@ -9,6 +9,7 @@ import { hasValue } from "@/app/util";
 interface IndicatorItem {
     id: number;
     indicator: Graphics;
+    distance: number;
 }
 
 export class Indicators {
@@ -47,19 +48,28 @@ export class Indicators {
 
     public createNewIndciator(gameObject: GameObject): void {
         let colour: Colour;
+        let distance: number;
 
         switch (gameObject.type) {
             case EGameObjectType.Projectile:
                 colour = Colour.Red;
+                distance = 1000;
                 break;
 
             default:
             case EGameObjectType.Ship:
                 colour = Colour.Blue;
+                distance = 750;
                 break;
 
             case EGameObjectType.World:
                 colour = Colour.Grey;
+                distance = 600;
+                break;
+
+            case EGameObjectType.Scrap:
+                colour = Colour.Grey;
+                distance = 500;
                 break;
         }
 
@@ -73,7 +83,8 @@ export class Indicators {
 
         const newItem = {
             id: gameObject.id,
-            indicator: graphics
+            indicator: graphics,
+            distance
         } as IndicatorItem;
 
         this._indicatorItems.push(newItem);
@@ -84,8 +95,8 @@ export class Indicators {
     public updateIndicator(indicator: IndicatorItem, gameObject: GameObject): void {
         const difference = Vector.create(gameObject.x - this._player.ship.x, gameObject.y - this._player.ship.y);
         const angle = Math.atan2(difference.y, difference.x);
-        const x: number = Math.cos(angle) * 750;
-        const y: number = Math.sin(angle) * 750;
+        const x: number = Math.cos(angle) * indicator.distance;
+        const y: number = Math.sin(angle) * indicator.distance;
 
         indicator.indicator.position = Vector.create(window.innerWidth * 2 + x, window.innerHeight * 2 + y);
         indicator.indicator.rotation = angle;
