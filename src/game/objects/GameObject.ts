@@ -71,18 +71,24 @@ export class GameObject {
         const bodys = components.map(c => c.body);
         this.setParts(bodys, true);
 
-        const containers = components.map((c) => { return c.container; });
+        components.forEach((c) => {
+            const container = new Container();
+            container.position = Vector.neg(this._position);
 
-        this._container.addChild(...containers);
+            c.draw(container);
+
+
+            this._container.addChild(container);
+        });
     }
 
-    public setParts(parts: Body[], draw: boolean): void {
+    public setParts(parts: Body[], draw: boolean = false): void {
         Body.setParts(this._body, parts);
         Body.setPosition(this.body, this._position);
 
-        if (draw) {
-            this.populateContainer();
-        }
+        // if (draw) {
+        //this.populateContainer();
+        // }
     }
 
     public addGraphics(graphics: Graphics): void {

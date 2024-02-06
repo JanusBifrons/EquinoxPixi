@@ -33,16 +33,10 @@ export class Havoc extends Ship {
         //this.addWeapon(launcherTwo);
 
         const components: Component[] = [
-            //new Wing(Vector.create(200, -115)),
-            //new Wing(Vector.create(200, 115), true),
             new Wing(Vector.create(-100, -115)),
             new Wing(Vector.create(-100, 115), true),
-            //new Wing(Vector.create(0, 0)),
-            //new Block(Vector.create(0, 0), 250, 250)
-            //new Wing(Vector.create(-100, 0), true),
-            //new Cockpit(Vector.create(0, 0))
+            new Cockpit(Vector.create(100, 0))
         ]
-
 
         this.setComponents(...components);
 

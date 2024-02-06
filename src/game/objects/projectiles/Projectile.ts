@@ -1,4 +1,4 @@
-import { Vector } from "matter-js";
+import { Body, Vector } from "matter-js";
 import { GameObject } from "../GameObject";
 import { EGameObjectType } from "../GameObjectTypes";
 
@@ -9,5 +9,9 @@ export class Projectile extends GameObject {
 
     public update(): void {
         super.update();
+    }
+
+    public setParts(parts: Body[]): void {
+        super.setParts(parts, true);
     }
 }
