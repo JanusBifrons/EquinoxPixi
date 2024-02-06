@@ -52,8 +52,6 @@ export class GameObject {
             graphics.position = Vector.neg(this._position);
             graphics.beginFill(this.colours.primaryColour.toString())
             graphics.lineStyle(10, this.colours.outlineColour.toString());
-            //graphics.beginFill('white');
-            //graphics.lineStyle(10, 'white');
 
             for (let i = 0; i < part.vertices.length; i++) {
                 const vert = part.vertices[i];

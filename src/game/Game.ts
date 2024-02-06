@@ -52,8 +52,8 @@ export class Game {
         //this.addGameObjects(new Havoc(Vector.create(500, 0)));
 
         // Create debug ships
-        for (let i = 0; i < 10; i++) {
-            //this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
+        for (let i = 0; i < 100; i++) {
+            this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
         }
     }
 

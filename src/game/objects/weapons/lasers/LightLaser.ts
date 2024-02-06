@@ -8,7 +8,13 @@ import { Color } from "pixi.js";
 
 export class LightLaser extends Weapon {
     constructor(position: Vector) {
-        super(position)
+        super(position);
+
+        this.colours = {
+            primaryColour: Colour.Red,
+            secondaryColour: Colour.Red,
+            outlineColour: Colour.White
+        }
 
         this.setBody([
             new Block(Vector.create(0, 0), 100, 20).body,
