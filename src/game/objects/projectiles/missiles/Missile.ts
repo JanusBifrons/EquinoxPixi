@@ -19,7 +19,7 @@ export class Missile extends Projectile {
         body.isSensor = true;
         body.frictionAir = 1;
 
-        this.setParts([body]);
+        this.setBody([body]);
 
         let x: number = Math.cos(angle) * (50 + speed);
         let y: number = Math.sin(angle) * (50 + speed);

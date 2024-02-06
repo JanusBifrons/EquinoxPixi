@@ -32,8 +32,6 @@ export class Pixi {
     }
 
     public addContainers(containers: Container[]): void {
-        console.log(this._stage);
-
         this._stage.addChild(...containers);
     }
 
@@ -44,14 +42,24 @@ export class Pixi {
     public update(lookAt: Vector): void {
         if (hasValue(this._application)) {
             this._stage.pivot = {
-                x: lookAt.x - window.innerWidth * 2,
-                y: lookAt.y - window.innerHeight * 2
+                x: lookAt.x - window.innerWidth,
+                y: lookAt.y - window.innerHeight
             };
 
             this._stage.scale = {
-                x: 0.25,
-                y: 0.25
+                x: 0.5,
+                y: 0.5
             } as IPointData;
+
+            // this._stage.pivot = {
+            //     x: lookAt.x - window.innerWidth * 2,
+            //     y: lookAt.y - window.innerHeight * 2
+            // };
+
+            // this._stage.scale = {
+            //     x: 0.25,
+            //     y: 0.25
+            // } as IPointData;
         }
     }
 }

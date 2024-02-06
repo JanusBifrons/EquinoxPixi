@@ -25,6 +25,6 @@ export class Cockpit extends Component {
         // verts.push(Vector.create(-10, -10));
         //verts.push(Vector.create(0, 0));
 
-        this.setParts([Bodies.fromVertices(position.x, position.y, [verts])]);
+        this.setBody([Bodies.fromVertices(position.x, position.y, [verts])]);
     }
 }

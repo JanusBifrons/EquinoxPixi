@@ -9,6 +9,7 @@ import { LightLaser } from "../../weapons/lasers/LightLaser";
 import { MissileLauncher } from "../../weapons/missiles/MissileLauncher";
 import { Graphics } from "pixi.js";
 import { Component } from "../../components/Component";
+import { GameObject } from "../../GameObject";
 
 export class Havoc extends Ship {
 
@@ -17,11 +18,11 @@ export class Havoc extends Ship {
     constructor(position: Vector) {
         super(position, Havoc.Stats());
 
-        //const laserOne = new LightLaser(Vector.create(-50, -200));
-        //const laserTwo = new LightLaser(Vector.create(-50, 200));
+        const laserOne = new LightLaser(Vector.create(-50, -200));
+        const laserTwo = new LightLaser(Vector.create(-50, 200));
 
-        //this.addWeapon(laserOne);
-        //this.addWeapon(laserTwo);
+        this.addWeapon(laserOne);
+        this.addWeapon(laserTwo);
 
         //const launcherOne = new MissileLauncher(Vector.create(-50, 200));
         //const launcherTwo = new MissileLauncher(Vector.create(-50, -200));
@@ -32,41 +33,15 @@ export class Havoc extends Ship {
         //this.addWeapon(launcherOne);
         //this.addWeapon(launcherTwo);
 
-        const components: Component[] = [
+        const children: GameObject[] = [
+            laserOne,
+            laserTwo,
             new Wing(Vector.create(-100, -115)),
             new Wing(Vector.create(-100, 115), true),
-            new Cockpit(Vector.create(100, 0))
+            new Cockpit(Vector.create(100, 0)),
         ]
 
-        this.setComponents(...components);
-
-        // this.setParts([
-        //     //new Cockpit(Vector.create(100, 0)).body,
-        //     //new Wing(Vector.create(-100, 115), true).body,
-        //     new Wing(Vector.create(-100, -115)).body,
-        //     //launcherOne.body,
-        //     //launcherTwo.body,
-        //     //laserOne.body,
-        //     //laserTwo.body
-        // ]);
-
-        // const graphics = new Graphics();
-
-        // graphics.position = Vector.create(-100, 115);
-
-        // graphics.beginFill('blue');
-        // graphics.moveTo(300, -30);
-        // graphics.lineTo(200, -130);
-        // graphics.lineTo(0, -280);
-        // graphics.lineTo(-50, -300);
-        // graphics.lineTo(-50, -320);
-        // graphics.lineTo(0, -300);
-        // graphics.lineTo(200, -150);
-        // graphics.lineTo(300, -50);
-        // graphics.closePath();
-        // graphics.endFill();
-
-        // this.addGraphics(graphics)
+        this.setChildren(...children);
     }
 
     public static Stats(): ShipStats {

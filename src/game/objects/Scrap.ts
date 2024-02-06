@@ -8,12 +8,16 @@ export class Scrap extends GameObject {
 
         Body.setPosition(body, body.position);
 
-        this.setParts([body]);
+        this.setBody([body], true);
 
-        this.body.frictionAir = 0.001;
+        //this.container.position = body.position;
 
-        const randomAngular = Math.random() > 0.5 ? 0.01 : -0.01;
+        //this.draw(this.container);
 
-        Body.setAngularVelocity(this.body, this.body.angularSpeed + randomAngular);
+        //this.body.frictionAir = 0.001;
+
+        //const randomAngular = Math.random() > 0.5 ? 0.01 : -0.01;
+
+        //Body.setAngularVelocity(this.body, this.body.angularSpeed + randomAngular);
     }
 }

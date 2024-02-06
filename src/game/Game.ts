@@ -49,11 +49,11 @@ export class Game {
         // Create the UI
         this.createUI();
 
-        //this.addGameObjects(new Havoc(Vector.create(0, 0)));
+        this.addGameObjects(new Havoc(Vector.create(500, 0)));
 
         // Create debug ships
         for (let i = 0; i < 10; i++) {
-            this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
+            //this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
         }
     }
 
@@ -69,7 +69,7 @@ export class Game {
 
     public createPlayer(): void {
         //this._player = new Player(new Debug(Vector.create(0, 0)));
-        this._player = new Player(new Havoc(Vector.create(500, 0)));
+        this._player = new Player(new Havoc(Vector.create(0, 0)));
 
         this.addGameObjects(this._player.ship);
 

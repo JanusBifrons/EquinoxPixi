@@ -8,7 +8,7 @@ export class LightLaser extends Weapon {
     constructor(position: Vector) {
         super(position)
 
-        this.setParts([
+        this.setBody([
             new Block(Vector.create(0, 0), 100, 20).body,
         ]);
     }

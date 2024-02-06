@@ -11,7 +11,7 @@ export class Projectile extends GameObject {
         super.update();
     }
 
-    public setParts(parts: Body[]): void {
-        super.setParts(parts, true);
+    public setBody(parts: Body[]): void {
+        super.setBody(parts, true);
     }
 }

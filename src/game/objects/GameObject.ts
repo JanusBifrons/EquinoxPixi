@@ -3,6 +3,7 @@ import { EGameObjectType } from "./GameObjectTypes";
 import { Container, Graphics } from "pixi.js";
 import { hasValue } from "@/app/util";
 import { Component } from "./components/Component";
+import { Colour } from "@/components/Colour";
 
 export class GameObject {
     ///
@@ -28,7 +29,7 @@ export class GameObject {
     /// PRIVATE
     ///
 
-    private populateContainer(): void {
+    private drawSelf(): void {
         for (const part of this._body.parts.slice(1)) { // Ignore the first part as it's the main body
             const graphics = new Graphics();
 
@@ -63,13 +64,31 @@ export class GameObject {
         this._container.rotation = this._body.angle;
     }
 
-    ///
-    /// PUBLIC
-    ///
+    public draw(container: Container): void {
+        const graphics = new Graphics();
+        graphics.beginFill(new Colour(255, 0, 0, 255).toString());
+        graphics.lineStyle(10, 'white');
 
-    public setComponents(...components: Component[]): void {
+        for (let i = 0; i < this.body.vertices.length; i++) {
+            const vert = this.body.vertices[i];
+
+            if (i == 0) {
+                graphics.moveTo(vert.x, vert.y);
+            }
+            else {
+                graphics.lineTo(vert.x, vert.y);
+            }
+        }
+
+        graphics.closePath();
+        graphics.endFill();
+
+        container.addChild(graphics);
+    }
+
+    public setChildren(...components: Component[]): void {
         const bodys = components.map(c => c.body);
-        this.setParts(bodys, true);
+        this.setBody(bodys);
 
         components.forEach((c) => {
             const container = new Container();
@@ -77,18 +96,18 @@ export class GameObject {
 
             c.draw(container);
 
-
             this._container.addChild(container);
         });
     }
 
-    public setParts(parts: Body[], draw: boolean = false): void {
+    public setBody(parts: Body[], draw: boolean = false): void {
         Body.setParts(this._body, parts);
         Body.setPosition(this.body, this._position);
 
-        // if (draw) {
-        //this.populateContainer();
-        // }
+        if (draw) {
+            this.drawSelf();
+        }
+
     }
 
     public addGraphics(graphics: Graphics): void {
