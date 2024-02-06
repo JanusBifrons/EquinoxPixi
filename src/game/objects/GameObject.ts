@@ -5,6 +5,12 @@ import { hasValue } from "@/app/util";
 import { Component } from "./components/Component";
 import { Colour } from "@/components/Colour";
 
+export interface IColours {
+    primaryColour: Colour;
+    secondaryColour: Colour;
+    outlineColour: Colour;
+}
+
 export class GameObject {
     ///
     /// PRIVATE
@@ -13,6 +19,16 @@ export class GameObject {
     private _type: EGameObjectType;
     private _position: Vector;
     private _container: Container;
+
+    ///
+    /// PUBLIC
+    ///
+    public colours: IColours = {
+        primaryColour: Colour.Grey,
+        secondaryColour: Colour.White,
+        outlineColour: Colour.Black
+    }
+
 
     constructor(position: Vector, type: EGameObjectType) {
         this._position = position;
@@ -34,8 +50,10 @@ export class GameObject {
             const graphics = new Graphics();
 
             graphics.position = Vector.neg(this._position);
-            graphics.beginFill('red');
-            graphics.lineStyle(10, 'white');
+            graphics.beginFill(this.colours.primaryColour.toString())
+            graphics.lineStyle(10, this.colours.outlineColour.toString());
+            //graphics.beginFill('white');
+            //graphics.lineStyle(10, 'white');
 
             for (let i = 0; i < part.vertices.length; i++) {
                 const vert = part.vertices[i];
@@ -64,10 +82,10 @@ export class GameObject {
         this._container.rotation = this._body.angle;
     }
 
-    public draw(container: Container): void {
+    public draw(container: Container, colours: IColours = this.colours): void {
         const graphics = new Graphics();
-        graphics.beginFill(new Colour(255, 0, 0, 255).toString());
-        graphics.lineStyle(10, 'white');
+        graphics.beginFill(colours.primaryColour.toString());
+        graphics.lineStyle(5, colours.outlineColour.toString());
 
         for (let i = 0; i < this.body.vertices.length; i++) {
             const vert = this.body.vertices[i];
@@ -94,7 +112,9 @@ export class GameObject {
             const container = new Container();
             container.position = Vector.neg(this._position);
 
-            c.draw(container);
+            console.log(this.colours);
+
+            c.draw(container, this.colours);
 
             this._container.addChild(container);
         });
@@ -107,7 +127,6 @@ export class GameObject {
         if (draw) {
             this.drawSelf();
         }
-
     }
 
     public addGraphics(graphics: Graphics): void {

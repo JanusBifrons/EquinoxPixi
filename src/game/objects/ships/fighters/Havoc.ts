@@ -7,9 +7,10 @@ import { Wing } from "../../components/wings/Wing";
 import { ShipStats } from "../ShipStats";
 import { LightLaser } from "../../weapons/lasers/LightLaser";
 import { MissileLauncher } from "../../weapons/missiles/MissileLauncher";
-import { Graphics } from "pixi.js";
+import { Color, Graphics } from "pixi.js";
 import { Component } from "../../components/Component";
 import { GameObject } from "../../GameObject";
+import { Colour } from "@/components/Colour";
 
 export class Havoc extends Ship {
 
@@ -17,6 +18,12 @@ export class Havoc extends Ship {
 
     constructor(position: Vector) {
         super(position, Havoc.Stats());
+
+        this.colours = {
+            primaryColour: Colour.Red,
+            secondaryColour: Colour.White,
+            outlineColour: Colour.Black,
+        }
 
         const laserOne = new LightLaser(Vector.create(-50, -200));
         const laserTwo = new LightLaser(Vector.create(-50, 200));
@@ -36,9 +43,9 @@ export class Havoc extends Ship {
         const children: GameObject[] = [
             laserOne,
             laserTwo,
+            new Cockpit(Vector.create(100, 0)),
             new Wing(Vector.create(-100, -115)),
             new Wing(Vector.create(-100, 115), true),
-            new Cockpit(Vector.create(100, 0)),
         ]
 
         this.setChildren(...children);

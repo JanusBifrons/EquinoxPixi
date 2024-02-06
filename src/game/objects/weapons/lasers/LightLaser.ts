@@ -3,6 +3,8 @@ import { Weapon } from "../Weapon";
 import { Laser } from "../../projectiles/lasers/Laser";
 import { Projectile } from "../../projectiles/Projectile";
 import { Block } from "../../components/blocks/Block";
+import { Colour } from "@/components/Colour";
+import { Color } from "pixi.js";
 
 export class LightLaser extends Weapon {
     constructor(position: Vector) {
@@ -10,7 +12,7 @@ export class LightLaser extends Weapon {
 
         this.setBody([
             new Block(Vector.create(0, 0), 100, 20).body,
-        ]);
+        ], true);
     }
 
     public fire(): Projectile[] {

@@ -2,10 +2,17 @@ import { Bodies, Body, ICollisionFilter, Vector } from "matter-js";
 import { GameObject } from "../../GameObject";
 import { EGameObjectType } from "../../GameObjectTypes";
 import { Projectile } from "../Projectile";
+import { Colour } from "@/components/Colour";
 
 export class Laser extends Projectile {
     constructor(position: Vector, angle: number, speed: number) {
         super(position);
+
+        this.colours = {
+            primaryColour: Colour.Red,
+            secondaryColour: Colour.Red,
+            outlineColour: Colour.Red
+        }
 
         const body = Bodies.rectangle(0, 0, 100, 10);
         Body.setAngle(body, angle);
@@ -16,7 +23,7 @@ export class Laser extends Projectile {
         let x: number = Math.cos(angle) * (100 + speed);
         let y: number = Math.sin(angle) * (100 + speed);
 
-        Body.setVelocity(this.body, Vector.create(x, y));
+        //Body.setVelocity(this.body, Vector.create(x, y));
 
         this.body.label = "Laser";
     }
