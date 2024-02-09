@@ -1,6 +1,6 @@
 'use client'
 
-import { Body, Engine, IEventCollision, Vector } from "matter-js";
+import { Body, Engine, IEventCollision, Mouse, MouseConstraint, Vector } from "matter-js";
 import { Player } from "./Player";
 import { Matter } from "./matter/Matter";
 import { GameObject } from "./objects/GameObject";
@@ -14,6 +14,7 @@ import { Ship } from "./objects/ships/Ship";
 import { IFiredEventArgs } from "./Args";
 import { Scrap } from "./objects/Scrap";
 import { Indicators } from "./ui/Indicators";
+import { Captial } from "./objects/ships/capitals/Capital";
 
 export class Game {
 
@@ -49,11 +50,13 @@ export class Game {
         // Create the UI
         this.createUI();
 
+        this.addGameObjects(new Captial(Vector.create(10000, 0)));
+
         //this.addGameObjects(new Havoc(Vector.create(500, 0)));
 
         // Create debug ships
         for (let i = 0; i < 100; i++) {
-            this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
+            //this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
         }
     }
 
@@ -68,8 +71,8 @@ export class Game {
     }
 
     public createPlayer(): void {
-        //this._player = new Player(new Debug(Vector.create(0, 0)));
-        this._player = new Player(new Havoc(Vector.create(25000, 25000)));
+        this._player = new Player(new Havoc(Vector.create(0, 0)));
+        //this._player = new Player(new Havoc(Vector.create(25000, 25000)));
 
         this.addGameObjects(this._player.ship);
 
@@ -135,7 +138,14 @@ export class Game {
         this._indicators.update(this._gameObjects);
 
         this._player.update();
-        this._pixi.update(this._player.ship.position);
+
+        const x = this._player.ship.position.x - (window.innerWidth * 4);
+        const y = this._player.ship.position.y - (window.innerHeight * 4);
+        const lookAt: Vector = Vector.create(x, y);
+
+        const scale = Vector.create(0.125, 0.125);
+
+        this._pixi.update(lookAt, scale);
     }
 
 

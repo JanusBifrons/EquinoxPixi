@@ -11,10 +11,9 @@ import { Color, Graphics } from "pixi.js";
 import { Component } from "../../components/Component";
 import { GameObject } from "../../GameObject";
 import { Colour } from "@/components/Colour";
+import { BloomFilter } from "pixi-filters";
 
 export class Havoc extends Ship {
-
-    protected _fillStyle: string = 'rgba(0, 100, 0, 0.25)';
 
     constructor(position: Vector) {
         super(position, Havoc.Stats());

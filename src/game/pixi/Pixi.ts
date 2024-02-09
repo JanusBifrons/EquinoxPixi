@@ -39,27 +39,21 @@ export class Pixi {
         this._stage.removeChild(...containers);
     }
 
-    public update(lookAt: Vector): void {
+    public update(lookAt: Vector, scale: Vector): void {
         if (hasValue(this._application)) {
-            // this._stage.pivot = {
-            //     x: lookAt.x - window.innerWidth,
-            //     y: lookAt.y - window.innerHeight
-            // };
+            this._stage.pivot = lookAt;
 
             // this._stage.scale = {
             //     x: 0.5,
             //     y: 0.5
             // } as IPointData;
 
-            this._stage.pivot = {
-                x: lookAt.x - window.innerWidth * 4,
-                y: lookAt.y - window.innerHeight * 4
-            };
+            // this._stage.pivot = {
+            //     x: lookAt.x - window.innerWidth * 4,
+            //     y: lookAt.y - window.innerHeight * 4
+            // };
 
-            this._stage.scale = {
-                x: 0.125,
-                y: 0.125
-            } as IPointData;
+            this._stage.scale = scale;
         }
     }
 }

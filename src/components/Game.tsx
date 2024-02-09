@@ -14,8 +14,8 @@ import { Grid } from "./Grid";
 import { Indicators } from "@/game/ui/Indicators";
 import { Ship } from "@/game/objects/ships/Ship";
 import { Havoc } from "@/game/objects/ships/fighters/Havoc";
-import { UI } from "@/game/ui/UI";
 import { hasValue } from "@/app/util";
+import { StatBar } from "@/game/ui/StatBar";
 
 export class Game extends React.Component {
 
@@ -26,7 +26,7 @@ export class Game extends React.Component {
     private _player: Player;
     private _gameObjects: GameObject[] = [];
     private _debugShip: Ship;
-    private _UI: UI;
+    //private _UI: StatBar;
     //private _indicators: Indicators;
 
     ///
@@ -66,7 +66,7 @@ export class Game extends React.Component {
     }
 
     public createUI(): void {
-        this._UI = new UI(this._render.context);
+        //this._UI = new StatBar(this._render.context);
         //this._indicators = new Indicators(this._player);
     }
 
@@ -260,7 +260,7 @@ export class Game extends React.Component {
     }
 
     public onAfterRender(): void {
-        this._UI.render();
+        //this._UI.render();
         //this._indicators.draw(this._render.context);
     }
 

@@ -1,8 +1,6 @@
 import { Colour } from "@/components/Colour";
-import { colors } from "@mui/material";
-import { render } from "react-dom";
 
-export class UI {
+export class StatBar {
     private _div: HTMLDivElement;
     private _canvas: HTMLCanvasElement;
     private _renderingContext: CanvasRenderingContext2D;

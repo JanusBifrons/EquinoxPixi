@@ -1,6 +1,6 @@
 import { hasValue } from "@/app/util";
 import { Event } from "@/components/Event";
-import { Body, Composite, Engine, Events, IEventCollision, IRunnerOptions, Render, Runner, Vector, World } from "matter-js";
+import { Body, Composite, Engine, Events, IEventCollision, IRunnerOptions, Mouse, MouseConstraint, Render, Runner, Vector, World } from "matter-js";
 import { Ship } from "../objects/ships/Ship";
 
 export class Matter {
@@ -12,6 +12,7 @@ export class Matter {
     private _runner: Runner;
     private _render: Render;
     private _lookAt: Ship;
+    private _mouse: Mouse;
 
     ///
     /// EVENTS

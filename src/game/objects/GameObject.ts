@@ -1,7 +1,6 @@
 import Matter, { Body, Vector } from "matter-js";
 import { EGameObjectType } from "./GameObjectTypes";
 import { Container, Graphics } from "pixi.js";
-import { hasValue } from "@/app/util";
 import { Component } from "./components/Component";
 import { Colour } from "@/components/Colour";
 

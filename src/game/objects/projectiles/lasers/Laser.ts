@@ -3,6 +3,7 @@ import { GameObject } from "../../GameObject";
 import { EGameObjectType } from "../../GameObjectTypes";
 import { Projectile } from "../Projectile";
 import { Colour } from "@/components/Colour";
+import { BloomFilter } from "pixi-filters";
 
 export class Laser extends Projectile {
     constructor(position: Vector, angle: number, speed: number) {

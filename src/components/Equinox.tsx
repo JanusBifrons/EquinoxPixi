@@ -3,6 +3,7 @@
 import { hasValue } from "@/app/util";
 import { Game } from "@/game/Game";
 import React, { ReactNode, RefObject } from "react";
+import UI from "./UI/UI";
 
 export class Equinox extends React.Component {
 
@@ -23,7 +24,10 @@ export class Equinox extends React.Component {
 
     public render(): ReactNode {
         return (
-            <canvas ref={this._canvas} className="flex" />
+            <div className="relative">
+                <canvas ref={this._canvas} className="flex" />
+                <UI></UI>
+            </div>
         )
     }
 }
