@@ -11,5 +11,6 @@ export interface UIEventArgs {
 
 export enum EUIEventType {
     Default,
-    ToggleInteralDampening
+    ToggleInteralDampening,
+    Missions
 }

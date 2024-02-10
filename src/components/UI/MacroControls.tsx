@@ -30,8 +30,16 @@ export default function MacroControls(props: IMacroControlsProps) {
                             icon={action.icon}
                             tooltipTitle={action.name}
                             onClick={() => {
+                                let type: EUIEventType = EUIEventType.Default;
+
+                                switch (action.name) {
+                                    case "Missions":
+                                        type = EUIEventType.Missions;
+                                        break;
+                                }
+
                                 props.action({
-                                    type: EUIEventType.Default
+                                    type: type
                                 } as UIEventArgs);
                             }}
                         />
