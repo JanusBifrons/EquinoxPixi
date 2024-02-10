@@ -1,31 +1,7 @@
 'use client'
 
 import { ThemeProvider, createTheme } from "@mui/material";
-
-// Augment the palette to include an ochre color
-declare module '@mui/material/styles' {
-	interface Palette {
-		ochre: Palette['primary'];
-	}
-
-	interface PaletteOptions {
-		ochre?: PaletteOptions['primary'];
-	}
-}
-
-// Update the Button's color options to include an ochre option
-declare module '@mui/material/Button' {
-	interface ButtonPropsColorOverrides {
-		ochre: true;
-	}
-}
-
-
-declare module '@mui/material/ToggleButton' {
-	interface ToggleButtonPropsColorOverrides {
-		ochre: true;
-	}
-}
+import variables from '../variables.module.scss';
 
 export default function Layout({
 	children,
@@ -35,34 +11,28 @@ export default function Layout({
 	const theme = createTheme({
 		palette: {
 			primary: {
-				main: '#33658A',
-				light: '#2F4858',
-				//dark: 'rgba(255, 255, 255, 255)',
-				contrastText: '#000'
-			},
-			secondary: {
-				main: '#FFFFFF'
-			},
-			ochre: {
-				main: '#E3D026',
-				light: '#E9DB5D',
-				dark: '#A29415',
-				contrastText: '#242105',
+				main: variables.primary,
+				light: variables.primaryHover,
+				contrastText: variables.contrastText
 			},
 		},
 		components: {
 			MuiToggleButton: {
 				styleOverrides: {
 					"root": {
-						backgroundColor: '#86BBD8',
-						color: '#000',
-						"&.Mui-selected, &.Mui-selected:hover": {
-							backgroundColor: '#33658A',
-							color: '#FFFFFF'
-						},
+						backgroundColor: variables.primary,
+						color: variables.primaryText,
 						":hover": {
-							backgroundColor: '#2F4858',
-							color: '#FFFFFF'
+							backgroundColor: variables.primaryHover,
+							color: variables.contrastTextHover
+						},
+						"&.Mui-selected": {
+							backgroundColor: variables.secondary,
+							color: variables.secondaryText
+						},
+						"&.Mui-selected:hover": {
+							backgroundColor: variables.secondaryHover,
+							color: variables.secondaryTextHover
 						}
 					}
 				}

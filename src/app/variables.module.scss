@@ -1,0 +1,23 @@
+$primary-col: #C9F0FF;
+$primary-hover: darken($primary-col, 10%);
+
+$primary-text: #000;
+$primary-text-hover: #000;
+
+$secondary-col: #094D92;
+$secondary-hover: darken($secondary-col, 10%);
+
+$secondary-text: #fff;
+$secondary-text-hover: #fff;
+
+:export {
+    primary: $primary-col;
+    primaryHover: $primary-hover;
+    primaryText: $primary-text;
+    primaryTextHover: $primary-text-hover;
+
+    secondary: $secondary-col;
+    secondaryHover: $secondary-hover;
+    secondaryText: $secondary-text;
+    secondaryTextHover: $secondary-text-hover;
+}
