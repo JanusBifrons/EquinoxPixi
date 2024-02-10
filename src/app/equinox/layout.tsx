@@ -35,10 +35,10 @@ export default function Layout({
 	const theme = createTheme({
 		palette: {
 			primary: {
-				main: 'rgba(0, 0, 255, 255)',
-				light: 'rgba(255, 255, 255, 255)',
+				main: '#33658A',
+				light: '#2F4858',
 				//dark: 'rgba(255, 255, 255, 255)',
-				contrastText: 'rgba(255, 255, 255, 255)'
+				contrastText: '#000'
 			},
 			secondary: {
 				main: '#FFFFFF'
@@ -51,16 +51,22 @@ export default function Layout({
 			},
 		},
 		components: {
-			// MuiToggleButton: {
-			// 	styleOverrides: {
-			// 		root: ({ ownerState }) => ({
-			// 			...(ownerState.color === 'primary' && {
-			// 				//backgroundColor: 'rgba(50, 50, 255, 255)',
-			// 				//color: '#FFF',
-			// 			}),
-			// 		}),
-			// 	}
-			// }
+			MuiToggleButton: {
+				styleOverrides: {
+					"root": {
+						backgroundColor: '#86BBD8',
+						color: '#000',
+						"&.Mui-selected, &.Mui-selected:hover": {
+							backgroundColor: '#33658A',
+							color: '#FFFFFF'
+						},
+						":hover": {
+							backgroundColor: '#2F4858',
+							color: '#FFFFFF'
+						}
+					}
+				}
+			}
 		}
 	});
 
