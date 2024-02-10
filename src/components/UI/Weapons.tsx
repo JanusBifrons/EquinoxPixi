@@ -15,7 +15,7 @@ export default function Weapons() {
         <div className="absolute top-0 left-0 right-0 flex justify-center pt-10">
             <div>
                 <ToggleButtonGroup
-                    color="error"
+                    color="primary"
                     exclusive
                     value={selectedWeapons}
                     onChange={handleChange}
@@ -26,7 +26,6 @@ export default function Weapons() {
                     <ToggleButton value={2}>Weapon Set Three</ToggleButton>
                 </ToggleButtonGroup>
             </div>
-
         </div>
     )
 }

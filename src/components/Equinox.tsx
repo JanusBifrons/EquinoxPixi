@@ -4,6 +4,7 @@ import { hasValue } from "@/app/util";
 import { Game } from "@/game/Game";
 import React, { ReactNode, RefObject } from "react";
 import UI from "./UI/UI";
+import { UIEventArgs } from "@/game/Args";
 
 export class Equinox extends React.Component {
 
@@ -26,7 +27,9 @@ export class Equinox extends React.Component {
         return (
             <div className="relative">
                 <canvas ref={this._canvas} className="flex" />
-                <UI></UI>
+                <UI uiEvent={(e: UIEventArgs) => {
+                    this._game.onUIEvent(e);
+                }}></UI>
             </div>
         )
     }

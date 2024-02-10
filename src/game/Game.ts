@@ -11,7 +11,7 @@ import { Debug } from "./objects/ships/Debug";
 import { hasValue } from "@/app/util";
 import { EGameObjectType } from "./objects/GameObjectTypes";
 import { Ship } from "./objects/ships/Ship";
-import { IFiredEventArgs } from "./Args";
+import { EUIEventType, IFiredEventArgs, UIEventArgs } from "./Args";
 import { Scrap } from "./objects/Scrap";
 import { Indicators } from "./ui/Indicators";
 import { Captial } from "./objects/ships/capitals/Capital";
@@ -152,6 +152,19 @@ export class Game {
     ///
     /// EVENT HANDLERS
     ///
+
+    public onUIEvent(e: UIEventArgs): void {
+        switch (e.type) {
+            default:
+            case EUIEventType.Default:
+                console.log("UI Event!");
+                break;
+
+            case EUIEventType.ToggleInteralDampening:
+                console.log(e.value);
+                break;
+        }
+    }
 
     public onCollision(sender: Matter, e: IEventCollision<Engine>): void {
         for (const collision of e.pairs) {

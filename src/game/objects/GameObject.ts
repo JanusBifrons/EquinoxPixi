@@ -109,8 +109,6 @@ export class GameObject {
             const container = new Container();
             container.position = Vector.neg(this._position);
 
-            console.log(this.colours);
-
             c.draw(container, this.colours);
 
             this._container.addChild(container);
