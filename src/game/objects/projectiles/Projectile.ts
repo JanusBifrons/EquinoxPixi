@@ -8,10 +8,6 @@ export abstract class Projectile extends GameObject {
         super(position, EGameObjectType.Projectile);
     }
 
-    public update(): void {
-        super.update();
-    }
-
     public setBody(parts: Body[]): void {
         super.setBody(parts, true);
     }

@@ -32,10 +32,11 @@ export class Stats {
 
     constructor(shieldCap: number = 0, armourCap: number = 0, hullCap: number = 100, powerCap: number = 100) {
         // Set shields
-        this._shieldRegenerationCap = 20000; // 1s
+        this._shieldRegenerationCap = 0; // 20s
         this._shieldRegen = 20000;
         this._shieldCap = shieldCap;
-        this.shields = this._shieldCap;
+        //this.shields = this._shieldCap;
+        this.shields = 0;
 
         // Set armour
         this._armourCap = armourCap;
@@ -135,8 +136,9 @@ export class Stats {
             this.shields += (this._shieldCap / 1000) * elapsed; // Regen in 1 second
 
             // Make sure shields dont overflow
-            if (this.shields > this._shieldCap)
+            if (this.shields > this._shieldCap) {
                 this.shields = this._shieldCap;
+            }
         }
 
         // Just to be safe...

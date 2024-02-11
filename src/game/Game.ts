@@ -74,7 +74,7 @@ export class Game {
 
         const bot = new AI(havoc, this._player.ship);
 
-        this.addAI(bot);
+        //this.addAI(bot);
 
         //this.addGameObjects(new Havoc(Vector.create(500, 0)));
 
@@ -164,11 +164,17 @@ export class Game {
         this._pixi.removeContainers(containers);
     }
 
-    public update(): void {
+    public update(sender: any, elapsedTime: number): void {
         Input.Update();
 
+        // if (isNaN(elapsedTime)) {
+        //     elapsedTime = 1000 / 60;
+        // }
+
+        console.log(elapsedTime);
+
         for (const gameObject of this._gameObjects) {
-            gameObject.update();
+            gameObject.update(elapsedTime);
         }
 
         for (const ai of this._AI) {

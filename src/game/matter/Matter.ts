@@ -93,8 +93,10 @@ export class Matter {
     /// EVENT HANDLERS
     ///
 
-    public onBeforeUpdate(): void {
-        this.beforeUpdate.raise(this);
+    public onBeforeUpdate(e: any): void {
+        console.log(e.source.delta);
+
+        this.beforeUpdate.raise(this, e.source.delta);
 
         if (hasValue(this._render) && hasValue(this._lookAt)) {
             //Render.lookAt(this._render, this._player.ship, Vector.create(500, 500), true);

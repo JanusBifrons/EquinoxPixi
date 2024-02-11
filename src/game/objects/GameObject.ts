@@ -78,9 +78,13 @@ export class GameObject {
     /// PUBLIC
     ///
 
-    public update(): void {
+    public update(elapsedTime: number): void {
         this._container.position = this._body.position;
         this._container.rotation = this._body.angle;
+
+        console.log(elapsedTime);
+
+        this.stats.update(elapsedTime);
     }
 
     public draw(container: Container, colours: IColours = this.colours): void {

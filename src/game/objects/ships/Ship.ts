@@ -36,10 +36,6 @@ export class Ship extends GameObject {
     /// PUBLIC
     ///
 
-    public update(): void {
-        super.update();
-    }
-
     public fire(): void {
         const projectiles: Projectile[] = this._weapons.map(w => w.fire()).flat();
 

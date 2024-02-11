@@ -26,8 +26,8 @@ export class Missile extends Projectile {
         Body.setVelocity(this.body, Vector.create(x, y));
     }
 
-    public update(): void {
-        super.update();
+    public update(elapsedTime: number): void {
+        super.update(elapsedTime);
 
         const x = this._target.position.x - this.body.position.x;
         const y = this._target.position.y - this.body.position.y;

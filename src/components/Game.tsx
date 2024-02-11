@@ -269,7 +269,7 @@ export class Game extends React.Component {
         this._player.update();
 
         for (const gameObject of this._gameObjects) {
-            gameObject.update();
+            //gameObject.update();
         }
 
         //this._indicators.update(this._gameObjects);
