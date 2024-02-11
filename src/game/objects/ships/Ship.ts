@@ -1,19 +1,11 @@
 import { Body, Sleeping, Vector } from "matter-js";
 import { GameObject } from "../GameObject";
 import { EGameObjectType } from "../GameObjectTypes";
-import { ShipStats } from "./ShipStats";
 import { Event } from "@/components/Event";
-import { Laser } from "../projectiles/lasers/Laser";
 import { Weapon } from "../weapons/Weapon";
 import { Projectile } from "../projectiles/Projectile";
 
 export class Ship extends GameObject {
-    ///
-    /// STATS
-    ///
-    private _stats: ShipStats;
-    private _isAlive: boolean = true;
-
     ///
     /// PRIVATE
     ///
@@ -23,12 +15,9 @@ export class Ship extends GameObject {
     /// EVENTS
     ///
     public fired: Event = new Event();
-    public destroyed: Event = new Event();
 
-    constructor(position: Vector, stats: ShipStats) {
+    constructor(position: Vector) {
         super(position, EGameObjectType.Ship);
-
-        this._stats = stats;
     }
 
     ///
@@ -51,15 +40,6 @@ export class Ship extends GameObject {
         super.update();
     }
 
-    public destroy(): void {
-        if (this._isAlive) {
-            this.destroyed.raise(this);
-
-            this._isAlive = false;
-        }
-
-    }
-
     public fire(): void {
         const projectiles: Projectile[] = this._weapons.map(w => w.fire()).flat();
 
@@ -71,20 +51,20 @@ export class Ship extends GameObject {
     }
 
     public turnToPort(): void {
-        this.body.torque = -this._stats.torque;
+        this.body.torque = -this.stats.torque;
 
         Sleeping.set(this.body, false);
     }
 
     public turnToStarboard(): void {
-        this.body.torque = this._stats.torque;
+        this.body.torque = this.stats.torque;
 
         Sleeping.set(this.body, false);
     }
 
     public afterBurn(): void {
-        let x: number = Math.cos(this.body.angle) * this._stats.accelleration * 5;
-        let y: number = Math.sin(this.body.angle) * this._stats.accelleration * 5;
+        let x: number = Math.cos(this.body.angle) * this.stats.accelleration * 5;
+        let y: number = Math.sin(this.body.angle) * this.stats.accelleration * 5;
 
         Body.setVelocity(this.body, Vector.add(this.body.velocity, Vector.create(x, y)));
 
@@ -92,8 +72,8 @@ export class Ship extends GameObject {
     }
 
     public accellerate() {
-        let x: number = Math.cos(this.body.angle) * this._stats.accelleration;
-        let y: number = Math.sin(this.body.angle) * this._stats.accelleration;
+        let x: number = Math.cos(this.body.angle) * this.stats.accelleration;
+        let y: number = Math.sin(this.body.angle) * this.stats.accelleration;
 
         Body.setVelocity(this.body, Vector.add(this.body.velocity, Vector.create(x, y)));
 
@@ -101,8 +81,8 @@ export class Ship extends GameObject {
     }
 
     public decellerate() {
-        let x: number = Math.cos(this.body.angle) * this._stats.accelleration;
-        let y: number = Math.sin(this.body.angle) * this._stats.accelleration;
+        let x: number = Math.cos(this.body.angle) * this.stats.accelleration;
+        let y: number = Math.sin(this.body.angle) * this.stats.accelleration;
 
         Body.setVelocity(this.body, Vector.add(this.body.velocity, Vector.create(-x, -y)));
 

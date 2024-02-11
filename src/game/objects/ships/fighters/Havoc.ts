@@ -4,19 +4,17 @@ import { Block } from "../../components/blocks/Block";
 import { Ship } from "../Ship";
 import { Cockpit } from "../../components/cockpit/Cockpit";
 import { Wing } from "../../components/wings/Wing";
-import { ShipStats } from "../ShipStats";
 import { LightLaser } from "../../weapons/lasers/LightLaser";
-import { MissileLauncher } from "../../weapons/missiles/MissileLauncher";
-import { Color, Graphics } from "pixi.js";
-import { Component } from "../../components/Component";
 import { GameObject } from "../../GameObject";
 import { Colour } from "@/components/Colour";
-import { BloomFilter } from "pixi-filters";
+import { Stats } from "../../Stats";
 
 export class Havoc extends Ship {
 
     constructor(position: Vector) {
-        super(position, Havoc.Stats());
+        super(position);
+
+        this.stats = Havoc.Stats();
 
         this.colours = {
             primaryColour: Colour.Red,
@@ -50,8 +48,8 @@ export class Havoc extends Ship {
         this.setChildren(...children);
     }
 
-    public static Stats(): ShipStats {
-        const stats = new ShipStats();
+    public static Stats(): Stats {
+        const stats = new Stats();
 
         stats.accelleration = 0.35;
         stats.torque = 60;

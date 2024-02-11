@@ -3,6 +3,8 @@ import { EGameObjectType } from "./GameObjectTypes";
 import { Container, Graphics } from "pixi.js";
 import { Component } from "./components/Component";
 import { Colour } from "@/components/Colour";
+import { Stats } from "./Stats";
+import { Event } from "@/components/Event";
 
 export interface IColours {
     primaryColour: Colour;
@@ -18,16 +20,18 @@ export class GameObject {
     private _type: EGameObjectType;
     private _position: Vector;
     private _container: Container;
+    private _isAlive: boolean = true;
 
     ///
     /// PUBLIC
     ///
-    public colours: IColours = {
-        primaryColour: Colour.Grey,
-        secondaryColour: Colour.White,
-        outlineColour: Colour.Black
-    }
+    public colours: IColours = { primaryColour: Colour.Grey, secondaryColour: Colour.White, outlineColour: Colour.Black }
+    public stats: Stats = new Stats();
 
+    ///
+    /// EVENTS
+    ///
+    public destroyed: Event = new Event();
 
     constructor(position: Vector, type: EGameObjectType) {
         this._position = position;
@@ -126,6 +130,27 @@ export class GameObject {
 
     public addGraphics(graphics: Graphics): void {
         this._container.addChild(graphics);
+    }
+
+
+    public hit(damage: number): void {
+        console.log("Stats before");
+        console.log(this.stats.toString());
+
+        if (this.stats.applyDamage(damage)) {
+            this.destroy();
+        }
+
+        console.log("Stats after");
+        console.log(this.stats.toString());
+    }
+
+    public destroy(): void {
+        if (this._isAlive) {
+            this.destroyed.raise(this);
+
+            this._isAlive = false;
+        }
     }
 
     ///

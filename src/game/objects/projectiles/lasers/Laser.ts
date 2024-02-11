@@ -1,9 +1,6 @@
-import { Bodies, Body, ICollisionFilter, Vector } from "matter-js";
-import { GameObject } from "../../GameObject";
-import { EGameObjectType } from "../../GameObjectTypes";
+import { Bodies, Body, Vector } from "matter-js";
 import { Projectile } from "../Projectile";
 import { Colour } from "@/components/Colour";
-import { BloomFilter } from "pixi-filters";
 
 export class Laser extends Projectile {
     constructor(position: Vector, angle: number, speed: number) {
@@ -27,5 +24,9 @@ export class Laser extends Projectile {
         Body.setVelocity(this.body, Vector.create(x, y));
 
         this.body.label = "Laser";
+    }
+
+    public get damage(): number {
+        return 10;
     }
 }

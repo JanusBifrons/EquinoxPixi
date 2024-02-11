@@ -12,9 +12,10 @@ import { hasValue } from "@/app/util";
 import { EGameObjectType } from "./objects/GameObjectTypes";
 import { Ship } from "./objects/ships/Ship";
 import { EUIEventType, IFiredEventArgs, UIEventArgs } from "./Args";
-import { Scrap } from "./objects/Scrap";
+import { Scrap } from "./objects/world/Scrap";
 import { Indicators } from "./ui/Indicators";
 import { Captial } from "./objects/ships/capitals/Capital";
+import { Projectile } from "./objects/projectiles/Projectile";
 
 export class Game {
 
@@ -56,7 +57,7 @@ export class Game {
 
         // Create debug ships
         for (let i = 0; i < 100; i++) {
-            //this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
+            this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
         }
     }
 
@@ -79,15 +80,23 @@ export class Game {
         this._matter.lookAt = this._player.ship;
     }
 
-    public addShipEvents(ship: Ship): void {
+    public attachShipEvents(ship: Ship): void {
         ship.fired.addHandler((sender: Ship, args: IFiredEventArgs) => {
             this.addGameObjects(...args.projectiles);
         });
+    }
 
-        ship.destroyed.addHandler(() => {
-            const childComponents: Body[] = ship.body.parts.slice(1);
+    public attachGameObjectEvents(gameObject: GameObject): void {
+        gameObject.destroyed.addHandler(() => {
+            if (gameObject.type == EGameObjectType.Ship) {
+                const childComponents: Body[] = gameObject.body.parts.slice(1);
 
-            this.addGameObjects(...childComponents.map(cp => new Scrap(cp)));
+                this.addGameObjects(...childComponents.map(cp => new Scrap(cp)));
+                this.removeGameObjects(gameObject);
+            }
+            else {
+                this.removeGameObjects(gameObject);
+            }
         });
     }
 
@@ -95,10 +104,12 @@ export class Game {
         // Add the objects to the array for tracking/updating
         this._gameObjects.push(...gameObjects);
 
-        // Check if they're ships and attach the events if they are
+        // Attach events
         gameObjects.forEach((go) => {
+            this.attachGameObjectEvents(go);
+
             if (go.type == EGameObjectType.Ship) {
-                this.addShipEvents(go as Ship)
+                this.attachShipEvents(go as Ship)
             }
         });
 
@@ -179,36 +190,28 @@ export class Game {
     }
 
     public onHandleCollision(gameObjectA: GameObject, gameObjectB: GameObject): void {
-        if (hasValue(gameObjectA)) {
-            switch (gameObjectA.type) {
-                case EGameObjectType.Ship:
-                    if (hasValue(gameObjectB)) {
-                        if (gameObjectB.type == EGameObjectType.Projectile) {
-                            const ship = gameObjectA as Ship;
-                            ship.destroy();
-
-                            this.removeGameObjects(gameObjectA, gameObjectB);
-                            return;
-                        }
-                    }
-                    break;
-            }
+        // If one or the other is null... we can't do anything
+        if (!hasValue(gameObjectA) || !hasValue(gameObjectB)) {
+            return;
         }
 
-        if (hasValue(gameObjectB)) {
-            switch (gameObjectB.type) {
-                case EGameObjectType.Ship:
-                    if (hasValue(gameObjectA)) {
-                        if (gameObjectA.type == EGameObjectType.Projectile) {
-                            const ship = gameObjectB as Ship;
-                            ship.destroy();
+        // Get the projectile
+        const projectile: Projectile = gameObjectA.type == EGameObjectType.Projectile ? gameObjectA as Projectile : gameObjectB.type == EGameObjectType.Projectile ? gameObjectB as Projectile : null;
+        const gameObject: GameObject = gameObjectA.type != EGameObjectType.Projectile ? gameObjectA : gameObjectB.type != EGameObjectType.Projectile ? gameObjectB : null;
 
-                            this.removeGameObjects(gameObjectA, gameObjectB);
-                            return;
-                        }
-                    }
-                    break;
-            }
+        // If there is no projectile
+        if (!hasValue(projectile)) {
+            return;
         }
+
+        // If there is no non-projectile
+        if (!hasValue(gameObject)) {
+            return;
+        }
+
+        // Now just have the projectile hit the game object...
+        gameObject.hit(projectile.damage);
+
+        this.removeGameObjects(projectile);
     }
 }

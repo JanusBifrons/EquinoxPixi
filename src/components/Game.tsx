@@ -8,7 +8,7 @@ import { GameObject } from "@/game/objects/GameObject";
 import { Player } from "@/game/Player";
 import { IFiredEventArgs } from "@/game/Args";
 import { Keys } from "./Keys";
-import { Scrap } from "@/game/objects/Scrap";
+import { Scrap } from "@/game/objects/world/Scrap";
 import { EGameObjectType } from "@/game/objects/GameObjectTypes";
 import { Grid } from "./Grid";
 import { Indicators } from "@/game/ui/Indicators";

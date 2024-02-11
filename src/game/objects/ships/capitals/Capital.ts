@@ -3,11 +3,13 @@ import { Ship } from "../Ship";
 import { Vector } from "matter-js";
 import { Block } from "../../components/blocks/Block";
 import { GameObject } from "../../GameObject";
-import { ShipStats } from "../ShipStats";
+import { Stats } from "../../Stats";
 
 export class Captial extends Ship {
     constructor(position: Vector) {
-        super(position, Captial.Stats());
+        super(position);
+
+        this.stats = Captial.Stats();
 
         this.colours = {
             primaryColour: Colour.Green,
@@ -32,23 +34,22 @@ export class Captial extends Ship {
 
         const children: GameObject[] = [
             new Block(Vector.create(0, 0), 1000, 1000),
-            new Block(Vector.create(1000, 0), 1000, 1000),
-            new Block(Vector.create(-1000, 0), 1000, 1000),
-            new Block(Vector.create(2000, 0), 1000, 1000),
-            new Block(Vector.create(3000, 0), 1000, 1000),
-            new Block(Vector.create(4000, 0), 1000, 1000),
-            new Block(Vector.create(5000, 0), 1000, 1000),
+            // new Block(Vector.create(1000, 0), 1000, 1000),
+            // new Block(Vector.create(-1000, 0), 1000, 1000),
+            // new Block(Vector.create(2000, 0), 1000, 1000),
+            // new Block(Vector.create(3000, 0), 1000, 1000),
+            // new Block(Vector.create(4000, 0), 1000, 1000),
+            // new Block(Vector.create(5000, 0), 1000, 1000),
         ]
 
         this.setChildren(...children);
     }
 
-    public static Stats(): ShipStats {
-        const stats = new ShipStats();
+    public static Stats(): Stats {
+        const stats = new Stats();
 
         stats.accelleration = 0.35;
         stats.torque = 60;
-        //stats.torque = 1;
 
         return stats;
     }

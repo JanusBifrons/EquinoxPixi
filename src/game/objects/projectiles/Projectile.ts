@@ -2,7 +2,8 @@ import { Body, Vector } from "matter-js";
 import { GameObject } from "../GameObject";
 import { EGameObjectType } from "../GameObjectTypes";
 
-export class Projectile extends GameObject {
+export abstract class Projectile extends GameObject {
+
     constructor(position: Vector) {
         super(position, EGameObjectType.Projectile);
     }
@@ -14,4 +15,6 @@ export class Projectile extends GameObject {
     public setBody(parts: Body[]): void {
         super.setBody(parts, true);
     }
+
+    public abstract get damage(): number;
 }

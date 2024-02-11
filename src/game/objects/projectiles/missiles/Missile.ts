@@ -7,7 +7,6 @@ export class Missile extends Projectile {
     /// PRIVATE 
     ///
     private _target: Body;
-    private _maxRotationSpeed: number = 0.1;
 
     constructor(position: Vector, angle: number, speed: number, target: Body) {
         super(position);
@@ -44,10 +43,12 @@ export class Missile extends Projectile {
         let xVel: number = Math.cos(this.body.angle) * 1;
         let yVel: number = Math.sin(this.body.angle) * 1;
 
-        console.log(this.body.speed);
-
         if (Math.abs(diffAngle) < 0.1) {
             Body.setVelocity(this.body, Vector.add(this.body.velocity, Vector.create(xVel, yVel)));
         }
+    }
+
+    public get damage(): number {
+        return 10;
     }
 }

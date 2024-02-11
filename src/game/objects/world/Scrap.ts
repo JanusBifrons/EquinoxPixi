@@ -1,6 +1,6 @@
 import { Body, Vector } from "matter-js";
-import { GameObject } from "./GameObject";
-import { EGameObjectType } from "./GameObjectTypes";
+import { GameObject } from "../GameObject";
+import { EGameObjectType } from "../GameObjectTypes";
 import { Colour } from "@/components/Colour";
 
 export class Scrap extends GameObject {

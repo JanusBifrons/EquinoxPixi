@@ -18,7 +18,7 @@ export default function UI(props: UIProps) {
     return (
         <div className="absolute top-0 right-0 bottom-0 left-0">
             <MissionsDialog show={showMissions} onClose={() => { setShowMissions(false) }} />
-            <ShipStats></ShipStats>
+            {/* <ShipStats></ShipStats> */}
             <MacroControls
                 action={(e) => {
                     props.uiEvent(e);
