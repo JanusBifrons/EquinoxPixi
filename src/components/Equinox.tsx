@@ -2,35 +2,58 @@
 
 import { hasValue } from "@/app/util";
 import { Game } from "@/game/Game";
-import React, { ReactNode, RefObject } from "react";
+import React, { ReactNode, RefObject, useCallback, useEffect, useMemo, useState } from "react";
 import UI from "./UI/UI";
-import { UIEventArgs } from "@/game/Args";
+import { IUIUpdateEventArgs, UIEventArgs } from "@/game/Args";
+import ShipStats from "./UI/ShipStats";
+import Account from "./UI/Account";
+import Weapons from "./UI/Weapons";
+import MacroControls from "./UI/MacroControls";
+import MissionsDialog from "./UI/Dialogs/Missions/MissionsDialog";
+import ShipControls from "./UI/ShipControls";
+import { Stats } from "@/game/objects/Stats";
 
-export class Equinox extends React.Component {
 
-    private _canvas: RefObject<HTMLCanvasElement>;
-    private _game: Game;
+export default function Equinoix() {
+    const [stats, setStats] = useState(new Stats());
+    const [stateBust, setStateBust] = useState(0);
 
-    constructor(props) {
-        super(props);
+    const game = new Game();
+    //const canvas = React.createRef<HTMLCanvasElement>();
 
-        this._canvas = React.createRef();
+    const updateUI = (sender, args: IUIUpdateEventArgs) => {
+        setStats(args.stats);
+        setStateBust(Math.random());
+
+        //console.log(hullPercent);
+
+        // console.log("argument sent");
+        // console.log(args.stats?.shieldPercent);
+        // console.log(stats?.shieldPercent);
     }
 
-    public componentDidMount(): void {
-        if (!hasValue(this._game)) {
-            this._game = new Game(this._canvas.current);
+
+    game.updateUI.addHandler(updateUI);
+
+
+    const onRefChange = useCallback(node => {
+        if (node === null) {
+            // DOM node referenced by ref has been unmounted
+        } else {
+            // DOM node referenced by ref has changed and exists
+            game.setCanvas(node as HTMLCanvasElement);
         }
-    }
+    }, []); // adjust deps
 
-    public render(): ReactNode {
-        return (
-            <div className="relative">
-                <canvas ref={this._canvas} className="flex" />
-                <UI uiEvent={(e: UIEventArgs) => {
-                    this._game.onUIEvent(e);
-                }}></UI>
-            </div>
-        )
-    }
+    return (
+        <div className="relative">
+            <canvas ref={onRefChange} className="flex" />
+            <UI
+                uiEvent={(e: UIEventArgs) => {
+                    game.onUIEvent(e);
+                }}
+                stats={stats}
+            />
+        </div>
+    )
 }

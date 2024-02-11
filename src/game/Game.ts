@@ -11,12 +11,14 @@ import { Debug } from "./objects/ships/Debug";
 import { hasValue } from "@/app/util";
 import { EGameObjectType } from "./objects/GameObjectTypes";
 import { Ship } from "./objects/ships/Ship";
-import { EUIEventType, IFiredEventArgs, UIEventArgs } from "./Args";
+import { EUIEventType, IFiredEventArgs, IUIUpdateEventArgs, UIEventArgs } from "./Args";
 import { Scrap } from "./objects/world/Scrap";
 import { Indicators } from "./ui/Indicators";
 import { Captial } from "./objects/ships/capitals/Capital";
 import { Projectile } from "./objects/projectiles/Projectile";
 import { AI } from "./ai/AI";
+import { StatBar } from "./ui/StatBar";
+import { Event } from "@/components/Event";
 
 export class Game {
 
@@ -30,7 +32,20 @@ export class Game {
     private _AI: AI[] = [];
     private _indicators: Indicators;
 
-    constructor(canvas: HTMLCanvasElement) {
+    ///
+    /// EVENTS
+    ///
+    public updateUI: Event = new Event();
+
+    constructor() {
+
+    }
+
+    ///
+    /// PUBLIC
+    ///
+
+    public setCanvas(canvas: HTMLCanvasElement): void {
         this._matter = new Matter();
         this._pixi = new Pixi();
 
@@ -48,7 +63,7 @@ export class Game {
         //this._matter.startRenderer(canvas);
 
         // Create the player
-        this.createPlayer();
+        this.createPlayer(canvas);
 
         // Create the UI
         this.createUI();
@@ -69,10 +84,6 @@ export class Game {
         }
     }
 
-    ///
-    /// PUBLIC
-    ///
-
     public addAI(ai: AI) {
         this._AI.push(ai);
 
@@ -85,7 +96,7 @@ export class Game {
         this._pixi.addContainers([this._indicators.container]);
     }
 
-    public createPlayer(): void {
+    public createPlayer(canvas: HTMLCanvasElement): void {
         this._player = new Player(new Havoc(Vector.create(-5000, 0)));
         //this._player = new Player(new Havoc(Vector.create(25000, 25000)));
 
@@ -163,6 +174,10 @@ export class Game {
         for (const ai of this._AI) {
             ai.update();
         }
+
+        this.updateUI.raise(this, {
+            stats: this._player.ship.stats
+        } as IUIUpdateEventArgs);
 
         this._indicators.update(this._gameObjects);
 

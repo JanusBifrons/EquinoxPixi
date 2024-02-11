@@ -1,6 +1,8 @@
 'use client'
 
-import { Equinox } from "../../components/Equinox";
+import Equinox from "@/components/Equinox";
+
+// import { Equinox } from "../../components/Equinox";
 
 export default function GamePage() {
     return (

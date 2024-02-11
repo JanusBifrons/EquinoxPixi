@@ -9,13 +9,18 @@ export class Stats {
     public accelleration: number;
 
     /// HEALTH
-    private shieldRegenerationCap: number;
-    private shieldRegen: number;
-    private shieldCap: number;
-    private armourCap: number;
-    private armourRegen: number;
-    private hullCap: number;
-    private hullRegen: number;
+    private _shieldRegenerationCap: number;
+    private _shieldRegen: number;
+    private _shieldCap: number;
+    private _armourRegen: number;
+    private _armourCap: number;
+    private _hullRegen: number;
+    private _hullCap: number;
+
+
+    /// POWER
+    private _powerRegen: number;
+    private _powerCap: number;
 
     ///
     /// CURRENT
@@ -23,23 +28,29 @@ export class Stats {
     public shields: number;
     public armour: number;
     public hull: number;
+    public power: number;
 
-    constructor(shieldCap: number = 0, armourCap: number = 0, hullCap: number = 100) {
+    constructor(shieldCap: number = 0, armourCap: number = 0, hullCap: number = 100, powerCap: number = 100) {
         // Set shields
-        this.shieldRegenerationCap = 20000; // 1s
-        this.shieldRegen = 20000;
-        this.shieldCap = shieldCap;
-        this.shields = this.shieldCap;
+        this._shieldRegenerationCap = 20000; // 1s
+        this._shieldRegen = 20000;
+        this._shieldCap = shieldCap;
+        this.shields = this._shieldCap;
 
         // Set armour
-        this.armourCap = armourCap;
-        this.armour = this.armourCap;
-        this.armourRegen = 0;
+        this._armourCap = armourCap;
+        this.armour = this._armourCap;
+        this._armourRegen = 0;
 
         // Set hull
-        this.hullCap = hullCap;
-        this.hull = this.hullCap;
-        this.hullRegen = 2.5;
+        this._hullCap = hullCap;
+        this.hull = this._hullCap;
+        this._hullRegen = 2.5;
+
+        // Set power
+        this._powerCap = 100;
+        this.power = this._powerCap;
+        this._powerRegen = 1;
     }
 
     ///
@@ -54,7 +65,7 @@ export class Stats {
         let damage = totalDamage;
 
         // Reset shield regen timer
-        this.shieldRegen = this.shieldRegenerationCap;
+        this._shieldRegen = this._shieldRegenerationCap;
 
         // Check if hit is on shields	
         if (this.shields > 0) {
@@ -66,7 +77,7 @@ export class Stats {
         }
 
         if (this.armour > 0) {
-            if (this.armour > damage) {
+            if (this.armour >= damage) {
                 // Impact on the armour
                 this.armour -= damage;
 
@@ -97,36 +108,35 @@ export class Stats {
     ///
 
     private regenStats(elapsed: number) {
-
         // Count Down Shield Regen Timer
-        if (this.shieldRegen > 0) {
-            this.shieldRegen -= elapsed;
+        if (this._shieldRegen > 0) {
+            this._shieldRegen -= elapsed;
         }
 
         // Calculate how much to regen by this frame
-        var hullRegenAmount = (this.hullRegen / 1000) * elapsed;
-        var armourRegenAmount = (this.armourRegen / 1000) * elapsed;
+        var hullRegenAmount = (this._hullRegen / 1000) * elapsed;
+        var armourRegenAmount = (this._armourRegen / 1000) * elapsed;
 
         // Regen armour
-        if (this.armour < this.armourCap) {
+        if (this.armour < this._armourCap) {
             this.armour += armourRegenAmount;
         }
 
 
         // Regen hull
-        if (this.hull < this.hullCap) {
+        if (this.hull < this._hullCap) {
             this.hull += hullRegenAmount;
         }
 
 
         // Check if shields should regen
-        if (this.shieldRegen <= 0 && this.shields < this.shieldCap) {
+        if (this._shieldRegen <= 0 && this.shields < this._shieldCap) {
             // Regen shields
-            this.shields += (this.shieldCap / 1000) * elapsed; // Regen in 1 second
+            this.shields += (this._shieldCap / 1000) * elapsed; // Regen in 1 second
 
             // Make sure shields dont overflow
-            if (this.shields > this.shieldCap)
-                this.shields = this.shieldCap;
+            if (this.shields > this._shieldCap)
+                this.shields = this._shieldCap;
         }
 
         // Just to be safe...
@@ -134,24 +144,24 @@ export class Stats {
             this.shields = 0;
 
         // Just to be safe...
-        if (this.shields > this.shieldCap)
-            this.shields = this.shieldCap;
+        if (this.shields > this._shieldCap)
+            this.shields = this._shieldCap;
 
         // Just to be safe...
         if (this.armour < 0)
             this.armour = 0;
 
         // Just to be safe...
-        if (this.armour > this.armourCap)
-            this.armour = this.armourCap;
+        if (this.armour > this._armourCap)
+            this.armour = this._armourCap;
 
         // Just to be safe...
         if (this.hull < 0)
             this.hull = 0;
 
         // Just to be safe...
-        if (this.hull > this.hullCap)
-            this.hull = this.hullCap;
+        if (this.hull > this._hullCap)
+            this.hull = this._hullCap;
     }
 
     public toString(): string {
@@ -163,23 +173,35 @@ export class Stats {
     ///
 
     public get shieldPercent(): number {
-        if (this.shields === 0)
+        if (this.shields === 0) {
             return 0;
+        }
 
-        return (this.shields / this.shieldCap) * 100;
+        return (this.shields / this._shieldCap) * 100;
     }
 
     public get armourPercent(): number {
         if (this.armour === 0)
             return 0;
 
-        return (this.armour / this.armourCap) * 100;
+        return (this.armour / this._armourCap) * 100;
     }
 
     public get hullPercent(): number {
-        if (this.hull === 0)
+        if (this.hull === 0) {
             return 0;
+        }
 
-        return (this.hull / this.hullCap) * 100;
+
+        return (this.hull / this._hullCap) * 100;
+    }
+
+    public get powerPercent(): number {
+        if (this.power === 0) {
+            return 0;
+        }
+
+
+        return (this.power / this._powerCap) * 100;
     }
 }

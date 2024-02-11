@@ -51,7 +51,7 @@ export class Havoc extends Ship {
     }
 
     public static Stats(): Stats {
-        const stats = new Stats();
+        const stats = new Stats(0, 0, 1000);
 
         stats.accelleration = 0.35;
         stats.torque = 10;

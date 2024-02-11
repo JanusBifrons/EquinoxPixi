@@ -15,7 +15,6 @@ import { Indicators } from "@/game/ui/Indicators";
 import { Ship } from "@/game/objects/ships/Ship";
 import { Havoc } from "@/game/objects/ships/fighters/Havoc";
 import { hasValue } from "@/app/util";
-import { StatBar } from "@/game/ui/StatBar";
 
 export class Game extends React.Component {
 

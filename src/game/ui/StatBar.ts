@@ -1,52 +1,58 @@
 import { Colour } from "@/components/Colour";
+import { Container, Graphics } from "pixi.js";
+import { Stats } from "../objects/Stats";
 
 export class StatBar {
-    private _div: HTMLDivElement;
-    private _canvas: HTMLCanvasElement;
-    private _renderingContext: CanvasRenderingContext2D;
+    private _container: Container;
 
-    constructor(renderingContext: CanvasRenderingContext2D) {
-        this._renderingContext = renderingContext;
-
-        console.log(this._renderingContext);
+    constructor() {
+        this._container = new Container();
+        this._container.position.x = window.innerWidth / 2;
+        this._container.position.y = window.innerWidth / 2;
     }
 
-    public render(): void {
+    public update(stats: Stats): void {
+        this._container.children.forEach(c => c.destroy());
+        this._container.removeChildren();
 
-        this.drawStatBar(80, 80, Colour.Blue);
-        this.drawStatBar(20, 60, Colour.Grey);
-        this.drawStatBar(20, 40, Colour.Green);
-        this.drawStatBar(20, 20, Colour.Random);
+        this._container.addChild(this.drawStatBar(stats.shieldPercent, 80, Colour.Blue));
+        this._container.addChild(this.drawStatBar(stats.armourPercent, 60, Colour.Grey));
+        this._container.addChild(this.drawStatBar(stats.hull, 40, Colour.Green));
+        this._container.addChild(this.drawStatBar(20, 20, Colour.Random))
     }
 
-    private drawStatBar(percent: number, radius: number, colour: Colour): void {
-        var _x = this._renderingContext.canvas.width / 2;
-        var _y = this._renderingContext.canvas.height - 30;
-
-        this._renderingContext.lineWidth = 23;
-        this._renderingContext.strokeStyle = 'white';
+    private drawStatBar(percent: number, radius: number, colour: Colour): Graphics {
+        const graphics = new Graphics();
 
         // Border
-        this._renderingContext.beginPath();
-        this._renderingContext.arc(_x, _y, radius, Math.PI, Math.PI * 2);
-        this._renderingContext.stroke();
-        this._renderingContext.closePath();
-
-        this._renderingContext.lineWidth = 20;
-        this._renderingContext.strokeStyle = 'black';
+        graphics.lineStyle(23, 'white');
+        graphics.beginFill('white');
+        graphics.arc(0, 0, radius, Math.PI, Math.PI * 2);
+        graphics.endFill();
+        graphics.closePath();
 
         // Background
-        this._renderingContext.beginPath();
-        this._renderingContext.arc(_x, _y, radius, Math.PI, Math.PI * 2);
-        this._renderingContext.stroke();
-        this._renderingContext.closePath();
+        graphics.lineStyle(20, 'white');
+        graphics.beginFill('black');
+        graphics.arc(0, 0, radius, Math.PI, Math.PI * 2);
+        graphics.endFill();
+        graphics.closePath();
 
         // Stat
-        this._renderingContext.lineWidth = 20;
-        this._renderingContext.strokeStyle = colour.toString();
-        this._renderingContext.beginPath();
-        this._renderingContext.arc(_x, _y, radius, Math.PI, Math.PI + (Math.PI * (percent / 100)));
-        this._renderingContext.stroke();
-        this._renderingContext.closePath();
+        graphics.lineStyle(20, 'white');
+        graphics.beginFill(colour.toString());
+        graphics.arc(0, 0, radius, Math.PI, Math.PI + (Math.PI * (percent / 100)));
+        graphics.endFill();
+        graphics.closePath();
+
+        return graphics;
+    }
+
+    ///
+    /// PROPERTIES
+    ///
+
+    public get container(): Container {
+        return this._container;
     }
 }

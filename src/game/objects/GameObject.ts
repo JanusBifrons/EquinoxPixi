@@ -134,15 +134,15 @@ export class GameObject {
 
 
     public hit(damage: number): void {
-        console.log("Stats before");
-        console.log(this.stats.toString());
+        // console.log("Stats before");
+        // console.log(this.stats.toString());
 
         if (this.stats.applyDamage(damage)) {
             this.destroy();
         }
 
-        console.log("Stats after");
-        console.log(this.stats.toString());
+        // console.log("Stats after");
+        // console.log(this.stats.toString());
     }
 
     public destroy(): void {
