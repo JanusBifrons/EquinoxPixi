@@ -40,9 +40,15 @@ export class Ship extends GameObject {
         const projectiles: Projectile[] = this._weapons.map(w => w.fire()).flat();
 
         if (projectiles.length > 0) {
-            this.fired.raise(this, {
-                projectiles
-            });
+            const drain = projectiles.map(p => p.drain).reduce((a, b) => a + b);
+
+            if (this.stats.power >= drain) {
+                this.stats.power -= drain;
+
+                this.fired.raise(this, {
+                    projectiles
+                });
+            }
         }
     }
 

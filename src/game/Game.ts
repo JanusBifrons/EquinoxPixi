@@ -167,12 +167,6 @@ export class Game {
     public update(sender: any, elapsedTime: number): void {
         Input.Update();
 
-        // if (isNaN(elapsedTime)) {
-        //     elapsedTime = 1000 / 60;
-        // }
-
-        console.log(elapsedTime);
-
         for (const gameObject of this._gameObjects) {
             gameObject.update(elapsedTime);
         }

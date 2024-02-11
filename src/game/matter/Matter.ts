@@ -94,8 +94,6 @@ export class Matter {
     ///
 
     public onBeforeUpdate(e: any): void {
-        console.log(e.source.delta);
-
         this.beforeUpdate.raise(this, e.source.delta);
 
         if (hasValue(this._render) && hasValue(this._lookAt)) {

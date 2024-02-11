@@ -29,4 +29,8 @@ export class Laser extends Projectile {
     public get damage(): number {
         return 10;
     }
+
+    public get drain(): number {
+        return 1;
+    }
 }

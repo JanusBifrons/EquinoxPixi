@@ -115,20 +115,25 @@ export class Stats {
         }
 
         // Calculate how much to regen by this frame
-        var hullRegenAmount = (this._hullRegen / 1000) * elapsed;
-        var armourRegenAmount = (this._armourRegen / 1000) * elapsed;
+        const hullRegenAmount = (this._hullRegen / 1000) * elapsed;
+        const armourRegenAmount = (this._armourRegen / 1000) * elapsed;
+        const powerRegenAmount = (this._powerRegen / 1000) * elapsed;
+
 
         // Regen armour
         if (this.armour < this._armourCap) {
             this.armour += armourRegenAmount;
         }
 
-
         // Regen hull
         if (this.hull < this._hullCap) {
             this.hull += hullRegenAmount;
         }
 
+        // Regen power
+        if (this.power < this._powerCap) {
+            this.power += powerRegenAmount;
+        }
 
         // Check if shields should regen
         if (this._shieldRegen <= 0 && this.shields < this._shieldCap) {
@@ -142,28 +147,44 @@ export class Stats {
         }
 
         // Just to be safe...
-        if (this.shields < 0)
+        if (this.shields < 0) {
             this.shields = 0;
+        }
 
         // Just to be safe...
-        if (this.shields > this._shieldCap)
+        if (this.shields > this._shieldCap) {
             this.shields = this._shieldCap;
+        }
 
         // Just to be safe...
-        if (this.armour < 0)
+        if (this.armour < 0) {
             this.armour = 0;
+        }
 
         // Just to be safe...
-        if (this.armour > this._armourCap)
+        if (this.armour > this._armourCap) {
             this.armour = this._armourCap;
+        }
 
         // Just to be safe...
-        if (this.hull < 0)
+        if (this.hull < 0) {
             this.hull = 0;
+        }
 
         // Just to be safe...
-        if (this.hull > this._hullCap)
+        if (this.hull > this._hullCap) {
             this.hull = this._hullCap;
+        }
+
+        // Just to be safe...
+        if (this.power < 0) {
+            this.power = 0;
+        }
+
+        // Just to be safe...
+        if (this.power > this._powerCap) {
+            this.power = this._powerCap;
+        }
     }
 
     public toString(): string {

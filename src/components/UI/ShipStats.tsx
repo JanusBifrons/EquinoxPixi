@@ -20,6 +20,14 @@ export default function ShipStats(props: IShipStatsProps) {
                                 },
                             ]
                         }}
+                        labels={{
+                            valueLabel: {
+                                hide: true
+                            },
+                            tickLabels: {
+                                type: "inner"
+                            }
+                        }}
                         value={props.stats?.hullPercent ? props.stats.hullPercent : 0}
                     />
                 </div>
@@ -32,6 +40,14 @@ export default function ShipStats(props: IShipStatsProps) {
                                     color: 'grey',
                                 },
                             ]
+                        }}
+                        labels={{
+                            valueLabel: {
+                                hide: true
+                            },
+                            tickLabels: {
+                                type: "inner"
+                            }
                         }}
                         value={props.stats?.armourPercent ? props.stats.armourPercent : 0}
                     />
@@ -46,6 +62,14 @@ export default function ShipStats(props: IShipStatsProps) {
                                 },
                             ],
                         }}
+                        labels={{
+                            valueLabel: {
+                                hide: true
+                            },
+                            tickLabels: {
+                                type: "inner"
+                            }
+                        }}
                         value={props.stats?.shieldPercent ? props.stats.shieldPercent : 0}
                     />
                 </div>
@@ -58,6 +82,14 @@ export default function ShipStats(props: IShipStatsProps) {
                                     color: 'yellow',
                                 },
                             ],
+                        }}
+                        labels={{
+                            valueLabel: {
+                                hide: true
+                            },
+                            tickLabels: {
+                                type: "inner"
+                            },
                         }}
                         value={props.stats?.powerPercent ? props.stats.powerPercent : 0}
                     />

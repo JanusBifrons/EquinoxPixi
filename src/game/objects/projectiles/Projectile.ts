@@ -13,4 +13,5 @@ export abstract class Projectile extends GameObject {
     }
 
     public abstract get damage(): number;
+    public abstract get drain(): number;
 }
