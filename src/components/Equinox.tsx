@@ -12,10 +12,12 @@ import MacroControls from "./UI/MacroControls";
 import MissionsDialog from "./UI/Dialogs/Missions/MissionsDialog";
 import ShipControls from "./UI/ShipControls";
 import { Stats } from "@/game/objects/Stats";
+import { Weapon } from "@/game/objects/weapons/Weapon";
 
 
 export default function Equinoix() {
-    const [stats, setStats] = useState(new Stats());
+    const [stats, setStats] = useState<Stats>();
+    const [weapons, setWeapons] = useState<Weapon[]>();
     const [stateBust, setStateBust] = useState(0);
 
     const game = new Game();
@@ -23,6 +25,7 @@ export default function Equinoix() {
 
     const updateUI = (sender, args: IUIUpdateEventArgs) => {
         setStats(args.stats);
+        setWeapons(args.weapons);
         setStateBust(Math.random());
 
         //console.log(hullPercent);
@@ -53,6 +56,7 @@ export default function Equinoix() {
                     game.onUIEvent(e);
                 }}
                 stats={stats}
+                weapons={weapons}
             />
         </div>
     )

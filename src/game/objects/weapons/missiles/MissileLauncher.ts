@@ -35,4 +35,8 @@ export class MissileLauncher extends Weapon {
 
         return [missile];
     }
+
+    public get name(): string {
+        return "Missile Launcher";
+    }
 }

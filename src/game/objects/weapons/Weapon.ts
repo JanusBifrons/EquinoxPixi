@@ -11,4 +11,5 @@ export abstract class Weapon extends GameObject {
     }
 
     public abstract fire(): Projectile[];
+    public abstract get name(): string;
 }

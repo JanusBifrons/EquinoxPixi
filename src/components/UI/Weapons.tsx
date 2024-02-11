@@ -1,7 +1,12 @@
+import { Weapon } from "@/game/objects/weapons/Weapon";
 import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useState } from "react";
 
-export default function Weapons() {
+export interface IWeaponsProps {
+    weapons: Weapon[];
+}
+
+export default function Weapons(props: IWeaponsProps) {
     const [selectedWeapons, setSelectedWeapons] = useState(0);
 
     const handleChange = (
@@ -16,14 +21,17 @@ export default function Weapons() {
             <div>
                 <ToggleButtonGroup
                     color="primary"
-                    exclusive
                     value={selectedWeapons}
                     onChange={handleChange}
                     style={{ backgroundColor: 'white' }}
                 >
-                    <ToggleButton value={0}>Weapon Set One</ToggleButton>
-                    <ToggleButton value={1}>Weapon Set Two</ToggleButton>
-                    <ToggleButton value={2}>Weapon Set Three</ToggleButton>
+                    {
+                        props.weapons?.map((weapon, index) => {
+                            return (
+                                <ToggleButton value={index}>{weapon.name}</ToggleButton>
+                            )
+                        })
+                    }
                 </ToggleButtonGroup>
             </div>
         </div>

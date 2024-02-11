@@ -29,4 +29,8 @@ export class LightLaser extends Weapon {
 
         return [laser];
     }
+
+    public get name(): string {
+        return "Light Laser";
+    }
 }

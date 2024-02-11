@@ -96,4 +96,12 @@ export class Ship extends GameObject {
 
         Sleeping.set(this.body, false);
     }
+
+    ///
+    /// PROPERTIES
+    ///
+
+    public get weapons(): Weapon[] {
+        return this._weapons;
+    }
 }

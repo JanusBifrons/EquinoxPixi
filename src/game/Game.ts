@@ -176,7 +176,8 @@ export class Game {
         }
 
         this.updateUI.raise(this, {
-            stats: this._player.ship.stats
+            stats: this._player.ship.stats,
+            weapons: this._player.ship.weapons
         } as IUIUpdateEventArgs);
 
         this._indicators.update(this._gameObjects);

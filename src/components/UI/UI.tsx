@@ -8,18 +8,24 @@ import ShipStats from "./ShipStats";
 import { useEffect, useState } from "react";
 import MissionsDialog from "./Dialogs/Missions/MissionsDialog";
 import { Stats } from "@/game/objects/Stats";
+import { Weapon } from "@/game/objects/weapons/Weapon";
 
 export interface UIProps {
     uiEvent: (e: UIEventArgs) => void;
     stats: Stats;
+    weapons: Weapon[];
 }
 
 export default function UI(props: UIProps) {
     const [showMissions, setShowMissions] = useState(false);
     const [stats, setStats] = useState(props.stats);
+    const [weapons, setWeapons] = useState(props.weapons);
 
     useEffect(() => {
+        console.log(props.weapons);
+
         setStats(props.stats);
+        setWeapons(props.weapons);
     });
 
     return (
@@ -37,7 +43,7 @@ export default function UI(props: UIProps) {
                     }
                 }}
             />
-            <Weapons></Weapons>
+            <Weapons weapons={weapons}></Weapons>
             <Account></Account>
             {/* <SectorItems></SectorItems> */}
             <ShipControls
