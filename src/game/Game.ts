@@ -16,6 +16,7 @@ import { Scrap } from "./objects/world/Scrap";
 import { Indicators } from "./ui/Indicators";
 import { Captial } from "./objects/ships/capitals/Capital";
 import { Projectile } from "./objects/projectiles/Projectile";
+import { AI } from "./ai/AI";
 
 export class Game {
 
@@ -26,6 +27,7 @@ export class Game {
     private _pixi: Pixi;
     private _gameObjects: GameObject[] = [];
     private _player: Player;
+    private _AI: AI[] = [];
     private _indicators: Indicators;
 
     constructor(canvas: HTMLCanvasElement) {
@@ -51,19 +53,31 @@ export class Game {
         // Create the UI
         this.createUI();
 
-        this.addGameObjects(new Captial(Vector.create(10000, 0)));
+        //this.addGameObjects(new Captial(Vector.create(10000, 0)));
+
+        const havoc = new Havoc(Vector.create(0, 0));
+
+        const bot = new AI(havoc, this._player.ship);
+
+        this.addAI(bot);
 
         //this.addGameObjects(new Havoc(Vector.create(500, 0)));
 
         // Create debug ships
         for (let i = 0; i < 100; i++) {
-            this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
+            //this.addGameObjects(new Havoc(Vector.create(Math.random() * 50000, Math.random() * 50000)));
         }
     }
 
     ///
     /// PUBLIC
     ///
+
+    public addAI(ai: AI) {
+        this._AI.push(ai);
+
+        this.addGameObjects(ai.ship);
+    }
 
     public createUI(): void {
         this._indicators = new Indicators(this._player);
@@ -72,7 +86,7 @@ export class Game {
     }
 
     public createPlayer(): void {
-        this._player = new Player(new Havoc(Vector.create(0, 0)));
+        this._player = new Player(new Havoc(Vector.create(-5000, 0)));
         //this._player = new Player(new Havoc(Vector.create(25000, 25000)));
 
         this.addGameObjects(this._player.ship);
@@ -144,6 +158,10 @@ export class Game {
 
         for (const gameObject of this._gameObjects) {
             gameObject.update();
+        }
+
+        for (const ai of this._AI) {
+            ai.update();
         }
 
         this._indicators.update(this._gameObjects);

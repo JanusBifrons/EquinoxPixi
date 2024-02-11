@@ -16,6 +16,8 @@ export class Havoc extends Ship {
 
         this.stats = Havoc.Stats();
 
+        this.body.frictionAir = 0.01;
+
         this.colours = {
             primaryColour: Colour.Red,
             secondaryColour: Colour.White,
@@ -52,7 +54,7 @@ export class Havoc extends Ship {
         const stats = new Stats();
 
         stats.accelleration = 0.35;
-        stats.torque = 60;
+        stats.torque = 10;
         //stats.torque = 1;
 
         return stats;

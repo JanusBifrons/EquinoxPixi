@@ -1,12 +1,12 @@
 import { Bodies, Body, Vector } from "matter-js";
 import { Ship } from "./Ship";
-import { ShipStats } from "./ShipStats";
 import { Block } from "../components/blocks/Block";
 import { Wing } from "../components/wings/Wing";
+import { Stats } from "../Stats";
 
 export class Debug extends Ship {
     constructor(position: Vector) {
-        super(position, Debug.Stats());
+        super(position);
 
         // this.setParts([
         //     new Wing(Vector.create(-100, 120), true).body,
@@ -14,8 +14,8 @@ export class Debug extends Ship {
         // ]);
     }
 
-    public static Stats(): ShipStats {
-        const stats = new ShipStats();
+    public static Stats(): Stats {
+        const stats = new Stats();
 
         stats.accelleration = 0.35;
         stats.torque = 100;

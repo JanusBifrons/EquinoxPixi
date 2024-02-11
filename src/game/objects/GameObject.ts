@@ -157,6 +157,10 @@ export class GameObject {
     /// PROPERTIES
     ///
 
+    public get isAlive(): boolean {
+        return this._isAlive;
+    }
+
     public get id(): number {
         return this.body.id;
     }
